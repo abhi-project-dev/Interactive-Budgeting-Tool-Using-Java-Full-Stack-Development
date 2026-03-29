@@ -1,101 +1,182 @@
-# Interactive-Budgeting-Tool-Using-Java-Full-Stack-Development
-The Interactive Budgeting Tool is a full stack web application designed to help users efficiently manage their personal finances. Built using Java Full Stack technologies, this application provides a seamless experience for tracking income, monitoring expenses, and planning savings.
-![image alt](https://github.com/abhi-project-dev/Interactive-Budgeting-Tool-Using-Java-Full-Stack-Development/blob/main/Screenshot%202025-04-02%20at%2020.49.39.png#:~:text=Screenshot-,2025%2D04%2D02,-at%2020.49.39.png)
-Users can input their financial details such as income, expenses, and savings targets. The system processes this data on the backend and dynamically generates insights, including:
+# 💰 Interactive Budgeting Tool (Java Full Stack)
 
+![Java](https://img.shields.io/badge/Java-Backend-red)
+![Spring Boot](https://img.shields.io/badge/SpringBoot-Framework-green)
+![HTML](https://img.shields.io/badge/HTML-Frontend-orange)
+![CSS](https://img.shields.io/badge/CSS-Styling-blue)
+![JavaScript](https://img.shields.io/badge/JavaScript-Dynamic-yellow)
+![Chart.js](https://img.shields.io/badge/Chart.js-Visualization-brightgreen)
+![Status](https://img.shields.io/badge/Project-Active-success)
 
-Total savings
+---
 
-Remaining budget
+## 🚀 Project Overview
 
-Expense ratios
+The **Interactive Budgeting Tool** is a full stack web application designed to help users efficiently manage their personal finances.
 
-Budget utilization
-![image alt](https://github.com/abhi-project-dev/Interactive-Budgeting-Tool-Using-Java-Full-Stack-Development/blob/main/Screenshot%202025-04-02%20at%2020.58.58.png)
-The application features an interactive frontend that updates in real time, allowing users to visualize their financial status clearly. It also supports data persistence, enabling users to store and manage their financial records securely.
+It allows users to:
 
+* Track income and expenses
+* Set savings goals
+* Analyze financial data in real time
+* Visualize budget insights using charts
 
-🔹 Key Features
+Built using **Java Full Stack technologies**, the application provides a seamless and interactive experience for financial planning.
 
+---
 
-💰 Income and expense tracking
+## 🖼️ Screenshots
 
-📊 Real-time budget calculations
+### 🔹 Dashboard
 
-🎯 Savings goal management
+![Dashboard](https://github.com/abhi-project-dev/Interactive-Budgeting-Tool-Using-Java-Full-Stack-Development/blob/main/Screenshot%202025-04-02%20at%2020.49.39.png)
 
-📈 Data visualization (charts & graphs)
+### 🔹 Budget Insights
 
-🔐 User authentication (Login/Signup) (if implemented)
+![Insights](https://github.com/abhi-project-dev/Interactive-Budgeting-Tool-Using-Java-Full-Stack-Development/blob/main/Screenshot%202025-04-02%20at%2020.58.58.png)
 
-📱 Responsive and user-friendly UI
+### 🔹 Expense Tracking
 
-⚡ Dynamic updates with seamless frontend-backend integration
+![Expense](https://github.com/user-attachments/assets/ad0101ec-bd90-417b-8b94-cd848da05ae0)
 
-![screenshot2](https://github.com/user-attachments/assets/ad0101ec-bd90-417b-8b94-cd848da05ae0)
+### 🔹 Charts & Analytics
 
-🔹 How It Works
+![Charts](https://github.com/user-attachments/assets/d52f67aa-2faa-46f6-897d-246624baf5a8)
 
-User registers/logs into the system
+---
 
-Inputs income, expenses, and savings goals
+## ✨ Key Features
 
-Backend processes data using Java
+* 💰 Income & Expense Tracking
+* 📊 Real-time Budget Calculations
+* 🎯 Savings Goal Management
+* 📈 Data Visualization (Charts & Graphs)
+* 📱 Responsive & Modern UI
+* ⚡ Dynamic Frontend Updates
+* 🔐 User Authentication (Optional)
 
-System calculates financial metrics
+---
 
-Results are displayed with charts and insights
+## ⚙️ How It Works
 
-![screenshot3](https://github.com/user-attachments/assets/d52f67aa-2faa-46f6-897d-246624baf5a8)
+1. User registers/logs into the system
+2. Inputs:
 
+   * Income
+   * Expenses
+   * Savings goals
+3. Backend processes the data using Java
+4. System calculates:
 
-🔹 Tech Stack
+   * Total savings
+   * Remaining budget
+   * Expense ratios
+   * Budget utilization
+5. Results are displayed with charts and insights
 
-🔸 Frontend
+---
 
-HTML
+## 🛠️ Tech Stack
 
-CSS
+### 🔹 Frontend
 
-JavaScript
+* HTML5
+* CSS3
+* JavaScript
 
-🔸 Backend
+### 🔹 Backend
 
-Java
+* Java
+* Spring Boot *(or Servlets/JSP)*
 
-Spring Boot (or Servlets/JSP if used)
+### 🔹 Database
 
-🔸 Database
+* MySQL / PostgreSQL
 
-MySQL / PostgreSQL
+### 🔹 Tools
 
-🔸 Tools
+* Git & GitHub
+* Postman (API Testing)
 
-Git & GitHub
+---
 
-Postman (API testing)
+## 📊 Core Functionalities
 
-<img width="1440" height="818" alt="Screenshot 2025-04-02 at 20 59 20" src="https://github.com/user-attachments/assets/5e71ed2d-71ca-43fb-a8ba-8ffdf89c3bcd" />
+* Budget planning and tracking
+* Expense categorization
+* Real-time progress bar for budget usage
+* Chart-based financial visualization (Chart.js)
+* Interactive UI with dynamic updates
+  
+<img width="1440" height="803" alt="Screenshot 2026-03-30 at 4 14 39 AM" src="https://github.com/user-attachments/assets/8a45a6b5-cf71-4b36-9f11-2cd4e505e0ef" />
 
+--
 
-🔹 Use Case
+## 🎯 Use Cases
 
-Personal finance management
+* Personal finance management
+* Expense tracking for students & professionals
+* Learning project for Java Full Stack Development
+* Portfolio project for software engineering roles
+  
+<img width="1440" height="818" alt="Screenshot 2025-04-02 at 20 59 20" src="https://github.com/user-attachments/assets/04e7daab-fca1-403d-b834-ca2da2766038" />
 
-Expense tracking for students & professionals
+---
 
-Demonstration of full stack development skills
+## 🔮 Future Enhancements
 
-<img width="1440" height="818" alt="Screenshot 2025-04-02 at 21 03 14" src="https://github.com/user-attachments/assets/4928f5be-3b50-4de0-bd4c-7a0182568ad6" />
+* 📱 Mobile App Integration
+* 💳 Payment App Integration (GPay, PhonePe, Paytm)
+* 🤖 AI-Based Financial Insights
+* 📊 Weekly/Monthly Reports
+* 🔔 Budget Alerts & Notifications
+  
+<img width="1440" height="818" alt="Screenshot 2025-04-02 at 21 03 14" src="https://github.com/user-attachments/assets/d8698de6-e8fc-428a-a136-a79211f7d047" />
 
-🔹 Future Enhancements
+---
 
-Integration with payment platforms (GPay, PhonePe, Paytm)
+## ⚙️ Installation & Setup
 
-AI-based spending insights
+```bash
+# Clone the repository
+git clone https://github.com/abhi-project-dev/Interactive-Budgeting-Tool-Using-Java-Full-Stack-Development.git
 
-Monthly/weekly financial reports
+# Navigate to the project folder
+cd Interactive-Budgeting-Tool-Using-Java-Full-Stack-Development
 
-Mobile app version
+# Run backend (Spring Boot)
+# Open frontend in browser
+```
 
-Notification system for budget limits
+---
+
+## 📂 Project Structure
+
+```
+📁 Interactive-Budgeting-Tool
+ ┣ 📁 frontend
+ ┣ 📁 backend
+ ┣ 📁 database
+ ┣ 📁 screenshots
+ ┣ 📄 README.md
+```
+
+---
+
+## 👨‍💻 Author
+
+**Abhiram Thallapally**
+
+* 💼 Aspiring Software Engineer | AI & ML Enthusiast
+* 🔗 GitHub: https://github.com/abhi-project-dev
+* 🔗 LinkedIn: www.linkedin.com/in/abhiram-thallapally-681a4b328
+
+---
+
+## ⭐ Support
+
+If you like this project:
+👉 Star ⭐ the repository
+👉 Share it with others
+
+---
