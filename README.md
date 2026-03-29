@@ -32,7 +32,7 @@ The application features an interactive frontend that updates in real time, allo
 
 ⚡ Dynamic updates with seamless frontend-backend integration
 
-![image alt](https://github.com/abhi-project-dev/Interactive-Budgeting-Tool-Using-Java-Full-Stack-Development/edit/main/README.md#:~:text=screenshot1.jpeg)
+![screenshot2](https://github.com/user-attachments/assets/ad0101ec-bd90-417b-8b94-cd848da05ae0)
 
 🔹 How It Works
 
@@ -45,7 +45,10 @@ Backend processes data using Java
 System calculates financial metrics
 
 Results are displayed with charts and insights
-![image alt](https://github.com/abhi-project-dev/Interactive-Budgeting-Tool-Using-Java-Full-Stack-Development/edit/main/README.md)
+
+![screenshot3](https://github.com/user-attachments/assets/d52f67aa-2faa-46f6-897d-246624baf5a8)
+
+
 🔹 Tech Stack
 
 🔸 Frontend
@@ -71,7 +74,10 @@ MySQL / PostgreSQL
 Git & GitHub
 
 Postman (API testing)
-![image alt](https://github.com/abhi-project-dev/Interactive-Budgeting-Tool-Using-Java-Full-Stack-Development/edit/main/README.md#:~:text=Screenshot-,2025%2D04%2D02,-at%2020.59.20.png)
+
+<img width="1440" height="818" alt="Screenshot 2025-04-02 at 20 59 20" src="https://github.com/user-attachments/assets/5e71ed2d-71ca-43fb-a8ba-8ffdf89c3bcd" />
+
+
 🔹 Use Case
 
 Personal finance management
@@ -79,6 +85,8 @@ Personal finance management
 Expense tracking for students & professionals
 
 Demonstration of full stack development skills
+
+<img width="1440" height="818" alt="Screenshot 2025-04-02 at 21 03 14" src="https://github.com/user-attachments/assets/4928f5be-3b50-4de0-bd4c-7a0182568ad6" />
 
 🔹 Future Enhancements
 
