@@ -11,7 +11,7 @@ Remaining budget
 Expense ratios
 
 Budget utilization
-
+![image alt](https://github.com/abhi-project-dev/Interactive-Budgeting-Tool-Using-Java-Full-Stack-Development/blob/main/Screenshot%202025-04-02%20at%2020.58.58.png)
 The application features an interactive frontend that updates in real time, allowing users to visualize their financial status clearly. It also supports data persistence, enabling users to store and manage their financial records securely.
 
 
@@ -31,7 +31,7 @@ The application features an interactive frontend that updates in real time, allo
 📱 Responsive and user-friendly UI
 
 ⚡ Dynamic updates with seamless frontend-backend integration
-
+![image alt](https://github.com/abhi-project-dev/Interactive-Budgeting-Tool-Using-Java-Full-Stack-Development/edit/main/README.md#:~:text=screenshot2.jpeg)
 🔹 How It Works
 
 User registers/logs into the system
@@ -43,7 +43,7 @@ Backend processes data using Java
 System calculates financial metrics
 
 Results are displayed with charts and insights
-
+![image alt](https://github.com/abhi-project-dev/Interactive-Budgeting-Tool-Using-Java-Full-Stack-Development/edit/main/README.md)
 🔹 Tech Stack
 
 🔸 Frontend
@@ -69,7 +69,7 @@ MySQL / PostgreSQL
 Git & GitHub
 
 Postman (API testing)
-
+![image alt](https://github.com/abhi-project-dev/Interactive-Budgeting-Tool-Using-Java-Full-Stack-Development/edit/main/README.md#:~:text=Screenshot-,2025%2D04%2D02,-at%2020.59.20.png)
 🔹 Use Case
 
 Personal finance management
