@@ -32,6 +32,7 @@ The application features an interactive frontend that updates in real time, allo
 
 ⚡ Dynamic updates with seamless frontend-backend integration
 ![image alt](https://github.com/abhi-project-dev/Interactive-Budgeting-Tool-Using-Java-Full-Stack-Development/edit/main/README.md#:~:text=screenshot2.jpeg)
+
 🔹 How It Works
 
 User registers/logs into the system
