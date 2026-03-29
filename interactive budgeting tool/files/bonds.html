@@ -1,0 +1,481 @@
+ 
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Investment Plans</title>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+     <style>
+         * {
+             margin: 0;
+             padding: 0;
+             box-sizing: border-box;
+             font-family: "Poppins", sans-serif;
+         }
+ 
+         body {
+             background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+             color: #333;
+         }
+ 
+         header {
+             position: fixed;
+             width: 100%;
+             top: 0;
+             left: 0;
+             z-index: 1000;
+             background: rgba(0, 0, 0, 0.8);
+             backdrop-filter: blur(10px);
+         }
+ 
+         .navbar {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             padding: 10px 20px;
+             color: white;
+         }
+ 
+         .navbar .hamburger-btn {
+             display: none;
+             color: #fff;
+             cursor: pointer;
+             font-size: 1.5rem;
+         }
+ 
+         .navbar .logo {
+             display: flex;
+             align-items: center;
+             text-decoration: none;
+         }
+ 
+         .navbar .logo img {
+             width: 40px;
+             border-radius: 50%;
+         }
+ 
+         .navbar .logo h2 {
+             color: #fff;
+             font-weight: 600;
+             font-size: 1.7rem;
+             margin-left: 10px;
+         }
+ 
+         .navbar .links {
+             display: flex;
+             gap: 35px;
+             list-style: none;
+             align-items: center;
+         }
+ 
+         .navbar .close-btn {
+             position: absolute;
+             right: 20px;
+             top: 20px;
+             display: none;
+             color: #000;
+             cursor: pointer;
+         }
+ 
+         .navbar .links a {
+             color: #fff;
+             font-size: 1.1rem;
+             font-weight: 500;
+             text-decoration: none;
+             transition: color 0.3s ease;
+         }
+ 
+         .navbar .links a:hover {
+             color: #19e8ff;
+         }
+ 
+         .hero {
+             height: 100vh;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             background: url('/files/images/b.jpg') no-repeat center center/cover;
+             color: #f9faf9;
+             text-align: center;
+         }
+ 
+         .hero h1 {
+             font-size: 4rem;
+             margin-bottom: 20px;
+         }
+ 
+         .hero p {
+             font-size: 1.5rem;
+             margin-bottom: 40px;
+         }
+ 
+         .hero .cta-btn {
+             padding: 15px 30px;
+             background: #00ea0c;
+             color: white;
+             border: none;
+             border-radius: 50px;
+             font-size: 1.2rem;
+             cursor: pointer;
+             transition: background 0.3s ease;
+         }
+ 
+         .hero .cta-btn:hover {
+             background: #3700b3;
+         }
+ 
+         .investment-section {
+             padding: 60px 20px;
+             background: rgba(247, 250, 250, 0.834);
+             margin: 20px;
+             border-radius: 10px;
+             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.623);
+             background-color: #ffffff8b;
+         }
+ 
+         .investment-section h2 {
+             font-size: 2.5rem;
+             margin-bottom: 40px;
+             color: #6806fa;
+             text-align: center;
+         }
+ 
+         .grid-container {
+             display: grid;
+             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+             gap: 20px;
+         }
+ 
+         .card {
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+             justify-content: center;
+             padding: 20px;
+             background: #fcfbfb;
+             border-radius: 10px;
+             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.376);
+             transition: transform 0.3s ease, box-shadow 0.3s ease;
+         }
+ 
+         .card:hover {
+             transform: translateY(-10px);
+             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+             background: #3ae1ffc0;
+         }
+ 
+         .card img {
+             width: 80px;
+             height: 80px;
+             margin-bottom: 20px;
+         }
+ 
+         .card p {
+             font-size: 1.2rem;
+             font-weight: bold;
+             text-align: center;
+         }
+ 
+         @media (max-width: 768px) {
+             .navbar .hamburger-btn {
+                 display: block;
+             }
+ 
+             .navbar .links {
+                 position: fixed;
+                 top: 0;
+                 left: -100%;
+                 width: 40%;
+                 height: 100vh;
+                 background: rgb(254, 251, 251);
+                 flex-direction: column;
+                 justify-content: center;
+                 transition: left 0.3s ease;
+             }
+ 
+             .navbar .links.show-menu {
+                 left: 0;
+             }
+ 
+             .navbar .links a {
+                 color: #000;
+             }
+ 
+             .navbar .close-btn {
+                 display: block;
+             }
+ 
+             .hero h1 {
+                 font-size: 2.5rem;
+             }
+ 
+             .hero p {
+                 font-size: 1.2rem;
+             }
+         }
+     </style>
+ </head>
+ <body>
+     <header class="animate__animated animate__fadeInDown">
+         <nav class="navbar">
+             <span class="hamburger-btn">&#9776;</span>
+             <a href="investment.html" class="logo">
+                 <img src="/interactive budgeting tool/files/images/logo.png" alt="logo">
+                 <h2>Budgetingtool</h2>
+             </a>
+             <ul class="links">
+                 <span class="close-btn">&times;</span>
+                 <li><a href="stocks.html">STOCKS</a></li>
+                 <li><a href="CRYPTO.HTML">CRYPTO</a></li>
+                 <li><a href="commodities.html">COMMODITIES</a></li>
+                 <li><a href="bonds.html">BONDS</a></li>
+                 <li><a href="mutualfunds.html">MUTUAL FUNDS</a></li>
+             </ul>
+         </nav>
+     </header>
+ 
+<!-- Bonds Section -->
+<section class="investment-section">
+    <h2>Bonds</h2>
+    <div class="grid-container">
+      <div class="card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_India.svg/1200px-Flag_of_India.svg.png" alt="Indian Bonds" class="logo">
+        <p><a href="https://www.gripinvest.in/assets#active#bonds" style="text-decoration: none;color: black;">Indian Bonds</a></p>
+      </div>
+      <div class="card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/1200px-Flag_of_the_People%27s_Republic_of_China.svg.png" alt="Chinese Bonds" class="logo">
+        <p>Chinese Bonds</p>
+      </div>
+      <div class="card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/1200px-Flag_of_the_United_States.svg.png" alt="American Bonds" class="logo">
+        <p>American Bonds</p>
+      </div>
+      <div class="card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Switzerland.svg/1200px-Flag_of_Switzerland.svg.png" alt="Swiss Bonds" class="logo">
+        <p>Swiss Bonds</p>
+      </div>
+      <div class="card">
+        <img src="https://logo.clearbit.com/rbi.org.in" alt="Sovereign Gold Bonds" class="logo">
+        <p>Sovereign Gold Bonds</p>
+      </div>
+      <div class="card">
+        <img src="https://logo.clearbit.com/bundesbank.de" alt="Germany Bonds" class="logo">
+        <p>Germany Bonds</p>
+      </div>
+      <div class="card">
+        <img src="https://logo.clearbit.com/tesoro.it" alt="Italy Bonds" class="logo">
+        <p>Italy Bonds</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="investment-section" id="live-bonds">
+      <h2>Real-time Bond Yields</h2>
+      <p id="bond-status" style="font-weight: 600; color:#1f4d98;">Loading bond yields...</p>
+      <table style="width:100%; border-collapse: collapse; margin-bottom: 20px;">
+        <thead>
+          <tr>
+            <th style="border: 1px solid #d1d5db; padding: 10px;">Instrument</th>
+            <th style="border: 1px solid #d1d5db; padding: 10px;">Yield</th>
+            <th style="border: 1px solid #d1d5db; padding: 10px;">Change</th>
+            <th style="border: 1px solid #d1d5db; padding: 10px;">Last Updated</th>
+          </tr>
+        </thead>
+        <tbody id="bond-data"></tbody>
+      </table>
+      <div style="height: 320px; background:#fff; border-radius:12px; padding:10px;"><canvas id="bondChart"></canvas></div>
+      <div id="tv-bond-chart" style="width: 100%; height: 500px; margin-top: 20px; background: #fff; border-radius: 12px;"></div>
+  </section>
+
+     <script>
+         const navbarMenu = document.querySelector(".navbar .links");
+         const hamburgerBtn = document.querySelector(".hamburger-btn");
+         const closeBtn = document.querySelector(".close-btn");
+ 
+         hamburgerBtn.addEventListener("click", () => {
+             navbarMenu.classList.toggle("show-menu");
+         });
+ 
+         closeBtn.addEventListener("click", () => {
+             navbarMenu.classList.remove("show-menu");
+         });
+ 
+         // Smooth scrolling for anchor links
+         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+             anchor.addEventListener('click', function (e) {
+                 e.preventDefault();
+                 document.querySelector(this.getAttribute('href')).scrollIntoView({
+                     behavior: 'smooth'
+                 });
+             });
+         });
+
+         const bonds = [
+             {name: 'US 3M', symbol: 'IRX', tvSymbol: 'CBOE:IRX'},
+             {name: 'US 5Y', symbol: 'FVX', tvSymbol: 'CBOE:FVX'},
+             {name: 'US 10Y', symbol: 'TNX', tvSymbol: 'CBOE:TNX'},
+             {name: 'US 30Y', symbol: 'TYX', tvSymbol: 'CBOE:TYX'}
+         ];
+
+         const bondTableBody = document.getElementById('bond-data');
+         const bondStatus = document.getElementById('bond-status');
+         const bondChartCanvas = document.getElementById('bondChart');
+         const bondChartCtx = bondChartCanvas.getContext('2d');
+
+         const bondChart = new Chart(bondChartCtx, {
+             type: 'line',
+             data: {
+                 labels: [],
+                 datasets: [{
+                     label: 'Yield (%)',
+                     data: [],
+                     borderColor: '#f59e0b',
+                     backgroundColor: '#f59e0b',
+                     tension: 0.2,
+                     fill: false
+                 }]
+             },
+             options: {
+                 responsive: true,
+                 maintainAspectRatio: false,
+                 plugins: {
+                     tooltip: {
+                         callbacks: { label: context => `${context.dataset.label}: ${context.formattedValue}%` }
+                     }
+                 },
+                 scales: {
+                     x: { title: { display: true, text: 'Date' } },
+                     y: { title: { display: true, text: 'Yield (%)' }}
+                 }
+             }
+         });
+
+         function formatDate(timestamp) {
+             return new Date(timestamp * 1000).toLocaleDateString();
+         }
+
+         function renderBondTable(data) {
+             bondTableBody.innerHTML = '';
+             data.forEach((item, index) => {
+                 const change = item.regularMarketChangePercent || 0;
+                 const row = document.createElement('tr');
+                 row.dataset.symbol = item.symbol;
+                 row.className = index === 0 ? 'selected' : '';
+                 row.style.cursor = 'pointer';
+                 row.innerHTML = `
+                     <td style="border: 1px solid #d1d5db; padding: 10px;">${item.shortName || item.symbol}</td>
+                     <td style="border: 1px solid #d1d5db; padding: 10px;">${item.regularMarketPrice?.toFixed(2) || 'N/A'}%</td>
+                     <td style="border: 1px solid #d1d5db; padding: 10px; color: ${change >= 0 ? '#0b8f1f' : '#e11616'};">${change.toFixed(2)}%</td>
+                     <td style="border: 1px solid #d1d5db; padding: 10px;">${formatDate(item.regularMarketTime)}</td>
+                 `;
+                 row.addEventListener('click', () => {
+                     document.querySelectorAll('#bond-data tr').forEach(r => r.classList.remove('selected'));
+                     row.classList.add('selected');
+                     loadBondChart(item.symbol);
+                     loadBondWidget(item.symbol);
+                 });
+                 bondTableBody.appendChild(row);
+             });
+         }
+
+         async function fetchJsonWithFallback(url) {
+             const direct = await fetch(url);
+             if (direct.status === 429) {
+                 // Yahoo too many requests; try a public CORS proxy fallback
+                 const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+                 const proxyResp = await fetch(proxyUrl);
+                 if (!proxyResp.ok) throw new Error(`Proxy request failed ${proxyResp.status}`);
+                 return proxyResp.json();
+             }
+
+             if (!direct.ok) throw new Error(`Yahoo quote request failed ${direct.status}`);
+             return direct.json();
+         }
+
+         async function fetchBondData() {
+             const symbolString = '^IRX,^FVX,^TNX,^TYX';
+             const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(symbolString)}`;
+
+             try {
+                 bondStatus.textContent = 'Loading bond yields...';
+                 const json = await fetchJsonWithFallback(url);
+
+                 const results = json?.quoteResponse?.result || [];
+                 if (!results.length) {
+                     bondStatus.textContent = 'Unable to load bond data.';
+                     return;
+                 }
+
+                 renderBondTable(results);
+                 bondStatus.textContent = `Updated at ${new Date().toLocaleTimeString()}`;
+
+                 const firstSymbol = results[0].symbol;
+                 await loadBondChart(firstSymbol);
+                 loadBondWidget(firstSymbol);
+             } catch (error) {
+                 console.error('Bond fetch error', error);
+                 if (error.message?.includes('429') || error.message?.includes('Too Many Requests')) {
+                     bondStatus.textContent = 'Rate limit reached; retrying in 10 seconds...';
+                     setTimeout(fetchBondData, 10 * 1000);
+                 } else {
+                     bondStatus.textContent = 'Error fetching bond data.';
+                 }
+             }
+         }
+
+         async function loadBondChart(symbol) {
+             const symbolForUrl = symbol.startsWith('^') ? symbol.slice(1) : symbol;
+             const url = `https://query1.finance.yahoo.com/v8/finance/chart/%5E${encodeURIComponent(symbolForUrl)}?interval=1d&range=1mo`;
+             try {
+                 const res = await fetch(url);
+                 const json = await res.json();
+                 const result = json.chart?.result?.[0];
+                 if (!result) return;
+
+                 const timestamps = result.timestamp;
+                 const values = result.indicators?.quote?.[0]?.close;
+                 if (!timestamps || !values) return;
+
+                 bondChart.data.labels = timestamps.map(ts => new Date(ts * 1000).toLocaleDateString());
+                 bondChart.data.datasets[0].data = values.map(v => v === null ? null : v.toFixed(2));
+                 bondChart.data.datasets[0].label = `${symbolForUrl} Yield (%)`;
+                 bondChart.update();
+             } catch (error) {
+                 console.error('Bond chart load error', error);
+             }
+         }
+
+         function loadBondWidget(symbol) {
+             const container = document.getElementById('tv-bond-chart');
+             container.innerHTML = '';
+             const bond = bonds.find(b => b.symbol === symbol.replace('^', '')) || bonds[2];
+             if (typeof TradingView === 'undefined') {
+                 container.innerHTML = '<p>TradingView widget unavailable - loading external script.</p>';
+                 return;
+             }
+             new TradingView.widget({
+                 width: '100%',
+                 height: 460,
+                 symbol: bond.tvSymbol,
+                 interval: 'D',
+                 timezone: 'Etc/UTC',
+                 theme: 'light',
+                 style: '1',
+                 locale: 'en',
+                 toolbar_bg: '#f1f3f6',
+                 enable_publishing: false,
+                 allow_symbol_change: true,
+                 container_id: 'tv-bond-chart'
+             });
+         }
+
+         fetchBondData();
+         setInterval(fetchBondData, 60 * 1000);
+     </script>
+     <script src="https://s3.tradingview.com/tv.js"></script>
+ </body>
+ </html><!-- Mutual Funds Section -->

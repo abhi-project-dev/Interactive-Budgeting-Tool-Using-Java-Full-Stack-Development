@@ -1,0 +1,351 @@
+ 
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Investment Plans</title>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+     <style>
+         * {
+             margin: 0;
+             padding: 0;
+             box-sizing: border-box;
+             font-family: "Poppins", sans-serif;
+         }
+ 
+         body {
+             background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+             color: #333;
+         }
+ 
+         header {
+             position: fixed;
+             width: 100%;
+             top: 0;
+             left: 0;
+             z-index: 1000;
+             background: rgba(0, 0, 0, 0.8);
+             backdrop-filter: blur(10px);
+         }
+ 
+         .navbar {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             padding: 10px 20px;
+             color: white;
+         }
+ 
+         .navbar .hamburger-btn {
+             display: none;
+             color: #fff;
+             cursor: pointer;
+             font-size: 1.5rem;
+         }
+ 
+         .navbar .logo {
+             display: flex;
+             align-items: center;
+             text-decoration: none;
+         }
+ 
+         .navbar .logo img {
+             width: 40px;
+             border-radius: 50%;
+         }
+ 
+         .navbar .logo h2 {
+             color: #fff;
+             font-weight: 600;
+             font-size: 1.7rem;
+             margin-left: 10px;
+         }
+ 
+         .navbar .links {
+             display: flex;
+             gap: 35px;
+             list-style: none;
+             align-items: center;
+         }
+ 
+         .navbar .close-btn {
+             position: absolute;
+             right: 20px;
+             top: 20px;
+             display: none;
+             color: #000;
+             cursor: pointer;
+         }
+ 
+         .navbar .links a {
+             color: #fff;
+             font-size: 1.1rem;
+             font-weight: 500;
+             text-decoration: none;
+             transition: color 0.3s ease;
+         }
+ 
+         .navbar .links a:hover {
+             color: #19e8ff;
+         }
+ 
+         .hero {
+             height: 100vh;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             background: url('/files/images/c.jpg') no-repeat center center/cover;
+             color: white;
+             text-align: center;
+         }
+ 
+         .hero h1 {
+             font-size: 4rem;
+             margin-bottom: 20px;
+         }
+ 
+         .hero p {
+             font-size: 1.5rem;
+             margin-bottom: 40px;
+         }
+ 
+         .hero .cta-btn {
+             padding: 15px 30px;
+             background: #6200ea;
+             color: white;
+             border: none;
+             border-radius: 50px;
+             font-size: 1.2rem;
+             cursor: pointer;
+             transition: background 0.3s ease;
+         }
+ 
+         .hero .cta-btn:hover {
+             background: #3700b3;
+         }
+ 
+         .investment-section {
+             padding: 60px 20px;
+             background: rgba(247, 250, 250, 0.834);
+             margin: 20px;
+             border-radius: 10px;
+             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.623);
+             background-color: #ffffff8b;
+         }
+ 
+         .investment-section h2 {
+             font-size: 2.5rem;
+             margin-bottom: 40px;
+             color: #6806fa;
+             text-align: center;
+         }
+ 
+         .grid-container {
+             display: grid;
+             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+             gap: 20px;
+         }
+ 
+         .card {
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+             justify-content: center;
+             padding: 20px;
+             background: #fcfbfb;
+             border-radius: 10px;
+             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.376);
+             transition: transform 0.3s ease, box-shadow 0.3s ease;
+         }
+ 
+         .card:hover {
+             transform: translateY(-10px);
+             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+             background: #3ae1ffc0;
+         }
+ 
+         .card img {
+             width: 80px;
+             height: 80px;
+             margin-bottom: 20px;
+             
+         }
+ 
+         .card p {
+             font-size: 1.2rem;
+             font-weight: bold;
+             text-align: center;
+             color: black;
+             border-bottom: none;
+         }
+
+         .live-data { margin: 32px 20px; }
+         .live-data h2 { font-size: 2rem; color: #2f2e70; margin-bottom: 14px; }
+         .live-data p { margin-bottom: 12px; color: #1e1e1e; }
+         .live-data table {
+             width: 100%;
+             border-collapse: collapse;
+             background: #fff;
+             border-radius: 12px;
+             overflow: hidden;
+             box-shadow: 0 5px 16px rgba(0,0,0,0.14);
+         }
+         .live-data th,
+         .live-data td {
+             padding: 12px 10px;
+             text-align: left;
+             border-bottom: 1px solid #ebeff7;
+         }
+         .live-data th { background: linear-gradient(90deg,#6200ea,#3700b3); color: #fff; }
+         .live-data tr:hover { background: rgba(98, 0, 234, 0.05); }
+
+         .crypto-change.positive { color: #00875a; font-weight: 700; }
+         .crypto-change.negative { color: #e11d48; font-weight: 700; }
+ 
+         @media (max-width: 768px) {
+             .navbar .hamburger-btn {
+                 display: block;
+             }
+ 
+             .navbar .links {
+                 position: fixed;
+                 top: 0;
+                 left: -100%;
+                 width: 40%;
+                 height: 100vh;
+                 background: rgb(254, 251, 251);
+                 flex-direction: column;
+                 justify-content: center;
+                 transition: left 0.3s ease;
+             }
+ 
+             .navbar .links.show-menu {
+                 left: 0;
+             }
+ 
+             .navbar .links a {
+                 color: #000;
+             }
+ 
+             .navbar .close-btn {
+                 display: block;
+             }
+ 
+             .hero h1 {
+                 font-size: 2.5rem;
+             }
+ 
+             .hero p {
+                 font-size: 1.2rem;
+             }
+         }
+     </style>
+ </head>
+ <body>
+     <header class="animate__animated animate__fadeInDown">
+         <nav class="navbar">
+             <span class="hamburger-btn">&#9776;</span>
+             <a href="investment.html" class="logo">
+                 <img src="/interactive budgeting tool/files/images/logo.png" alt="logo">
+                 <h2>Budgetingtool</h2>
+             </a>
+             <ul class="links">
+                 <span class="close-btn">&times;</span>
+                 <li><a href="stocks.html">STOCKS</a></li>
+                 <li><a href="CRYPTO.HTML">CRYPTO</a></li>
+                 <li><a href="commodities.html">COMMODITIES</a></li>
+                 <li><a href="bonds.html">BONDS</a></li>
+                 <li><a href="mutualfunds.html">MUTUAL FUNDS</a></li>
+             </ul>
+         </nav>
+     </header>
+      <!-- Crypto Section -->
+ <section class="investment-section">
+    <h2>Crypto</h2>
+    <div class="grid-container">
+      <a class="card" href="https://www.coingecko.com/en/coins/bitcoin" target="_blank" rel="noopener">
+        <img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" alt="Bitcoin" class="logo">
+        <p>Bitcoin</p>
+      </a>
+      <a class="card" href="https://www.coingecko.com/en/coins/ethereum" target="_blank" rel="noopener">
+        <img src="https://assets.coingecko.com/coins/images/279/small/ethereum.png" alt="Ethereum" class="logo">
+        <p>Ethereum</p>
+      </a>
+      <a class="card" href="https://www.coingecko.com/en/coins/dogecoin" target="_blank" rel="noopener">
+        <img src="https://assets.coingecko.com/coins/images/5/small/dogecoin.png" alt="Dogecoin" class="logo">
+        <p>Dogecoin</p>
+      </a>
+      <a class="card" href="https://www.coingecko.com/en/coins/ripple" target="_blank" rel="noopener">
+        <img src="https://assets.coingecko.com/coins/images/44/small/xrp-symbol-white-128.png" alt="Ripple" class="logo">
+        <p>Ripple (XRP)</p>
+      </a>
+      <a class="card" href="https://www.coingecko.com/en/coins/litecoin" target="_blank" rel="noopener">
+        <img src="https://assets.coingecko.com/coins/images/2/small/litecoin.png" alt="Litecoin" class="logo">
+        <p>Litecoin</p>
+      </a>
+      <a class="card" href="https://www.coingecko.com/en/coins/solana" target="_blank" rel="noopener">
+        <img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" alt="Solana" class="logo">
+        <p>Solana</p>
+      </a>
+      <a class="card" href="https://www.coingecko.com/en/coins/avalanche-2" target="_blank" rel="noopener">
+        <img src="https://assets.coingecko.com/coins/images/12559/small/coin-round-red.png" alt="Avalanche" class="logo">
+        <p>Avalanche</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="live-data">
+    <h2>Live Crypto Prices (CoinGecko)</h2>
+    <p>Real-time market data refreshed every minute from CoinGecko (no API key required).</p>
+    <p id="crypto-fetch-status" style="font-weight:600; color:#1f4d98;">Loading live data...</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Coin</th>
+          <th>Price (USD)</th>
+          <th>24h Change</th>
+          <th>Last Updated</th>
+          <th>Info</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr id="crypto-bitcoin"><td>Bitcoin</td><td class="crypto-price">-</td><td class="crypto-change">-</td><td class="crypto-updated">-</td><td><a target="_blank" rel="noopener" href="https://coinmarketcap.com/currencies/bitcoin/">CoinMarketCap</a></td></tr>
+        <tr id="crypto-ethereum"><td>Ethereum</td><td class="crypto-price">-</td><td class="crypto-change">-</td><td class="crypto-updated">-</td><td><a target="_blank" rel="noopener" href="https://coinmarketcap.com/currencies/ethereum/">CoinMarketCap</a></td></tr>
+        <tr id="crypto-dogecoin"><td>Dogecoin</td><td class="crypto-price">-</td><td class="crypto-change">-</td><td class="crypto-updated">-</td><td><a target="_blank" rel="noopener" href="https://coinmarketcap.com/currencies/dogecoin/">CoinMarketCap</a></td></tr>
+        <tr id="crypto-ripple"><td>Ripple</td><td class="crypto-price">-</td><td class="crypto-change">-</td><td class="crypto-updated">-</td><td><a target="_blank" rel="noopener" href="https://coinmarketcap.com/currencies/xrp/">CoinMarketCap</a></td></tr>
+        <tr id="crypto-litecoin"><td>Litecoin</td><td class="crypto-price">-</td><td class="crypto-change">-</td><td class="crypto-updated">-</td><td><a target="_blank" rel="noopener" href="https://coinmarketcap.com/currencies/litecoin/">CoinMarketCap</a></td></tr>
+        <tr id="crypto-solana"><td>Solana</td><td class="crypto-price">-</td><td class="crypto-change">-</td><td class="crypto-updated">-</td><td><a target="_blank" rel="noopener" href="https://coinmarketcap.com/currencies/solana/">CoinMarketCap</a></td></tr>
+      </tbody>
+    </table>
+  </section>
+     
+     <script>
+         const navbarMenu = document.querySelector(".navbar .links");
+         const hamburgerBtn = document.querySelector(".hamburger-btn");
+         const closeBtn = document.querySelector(".close-btn");
+ 
+         hamburgerBtn.addEventListener("click", () => {
+             navbarMenu.classList.toggle("show-menu");
+         });
+ 
+         closeBtn.addEventListener("click", () => {
+             navbarMenu.classList.remove("show-menu");
+         });
+ 
+         // Smooth scrolling for anchor links
+         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+             anchor.addEventListener('click', function (e) {
+                 e.preventDefault();
+                 document.querySelector(this.getAttribute('href')).scrollIntoView({
+                     behavior: 'smooth'
+                 });
+             });
+         });
+
+     </script>
+    <script src="crypto-data.js"></script>
+ </body>
+ </html>

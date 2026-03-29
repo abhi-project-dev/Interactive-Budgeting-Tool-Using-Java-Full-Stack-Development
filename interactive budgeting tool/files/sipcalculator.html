@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #081c2d;
+            --bg-mid: #123552;
+            --panel: rgba(9, 27, 42, 0.72);
+            --panel-soft: rgba(255, 255, 255, 0.08);
+            --panel-strong: rgba(255, 255, 255, 0.14);
+            --text-main: #f5fbff;
+            --text-soft: #b6c9d8;
+            --ink: #183042;
+            --accent: #2dd4bf;
+            --accent-strong: #14b8a6;
+            --accent-warm: #f59e0b;
+            --line: rgba(255, 255, 255, 0.14);
+            --shadow: 0 28px 60px rgba(2, 12, 23, 0.32);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            color: var(--text-main);
+            overflow-x: hidden;
+            position: relative;
+            background:
+                radial-gradient(circle at top left, rgba(45, 212, 191, 0.22), transparent 28%),
+                radial-gradient(circle at 85% 15%, rgba(245, 158, 11, 0.18), transparent 22%),
+                radial-gradient(circle at 20% 80%, rgba(56, 189, 248, 0.16), transparent 24%),
+                linear-gradient(140deg, #06111d 0%, #0d2234 45%, #123552 100%);
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -2;
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 56px 56px;
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent);
+        }
+
+        .floating-shapes {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.02));
+            filter: blur(0.4px);
+            animation: float 12s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 220px;
+            height: 220px;
+            top: 8%;
+            left: -40px;
+        }
+
+        .shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 18%;
+            right: 7%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            width: 180px;
+            height: 180px;
+            bottom: 16%;
+            left: 10%;
+            animation-delay: 4s;
+        }
+
+        .shape:nth-child(4) {
+            width: 260px;
+            height: 260px;
+            bottom: -60px;
+            right: -30px;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate3d(0, 0, 0); }
+            50% { transform: translate3d(0, -18px, 0); }
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            width: min(1200px, calc(100% - 32px));
+            margin: 18px auto 0;
+            padding: 14px 20px;
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            background: rgba(4, 18, 30, 0.7);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 18px 40px rgba(2, 12, 23, 0.22);
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+        }
+
+        .brand-mark {
+            display: grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--accent), #38bdf8);
+            color: #042436;
+            font-size: 1.2rem;
+            font-weight: 700;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+        }
+
+        .menu-btn {
+            display: none;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-main);
+            border-radius: 14px;
+            padding: 10px 14px;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-soft);
+            text-decoration: none;
+            font-size: 0.96rem;
+            transition: color 0.25s ease, opacity 0.25s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            color: var(--text-main);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 18px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-signin {
+            border-color: var(--line);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #38bdf8);
+            color: #042436;
+            box-shadow: 0 16px 32px rgba(20, 184, 166, 0.28);
+        }
+
+        .main-content {
+            width: min(1200px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 42px 0 72px;
+        }
+
+        .hero-header {
+            padding: 52px 0 28px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            margin-bottom: 22px;
+            border: 1px solid rgba(45, 212, 191, 0.24);
+            border-radius: 999px;
+            background: rgba(45, 212, 191, 0.09);
+            color: #9cf6ea;
+            font-size: 0.84rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .hero-header h1 {
+            font-size: clamp(3rem, 6vw, 5.6rem);
+            line-height: 0.96;
+            letter-spacing: -0.04em;
+            margin-bottom: 20px;
+            text-wrap: balance;
+        }
+
+        .hero-header p {
+            width: min(760px, 100%);
+            margin: 0 auto 28px;
+            color: var(--text-soft);
+            font-size: clamp(1.02rem, 2vw, 1.24rem);
+            line-height: 1.75;
+        }
+
+        .header-decoration {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 34px;
+        }
+
+        .decoration-line {
+            width: 56px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+        }
+
+        .decoration-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 0 8px rgba(45, 212, 191, 0.12);
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            width: min(860px, 100%);
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            padding: 22px 24px;
+            border-radius: 22px;
+            border: 1px solid var(--line);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+            backdrop-filter: blur(18px);
+            box-shadow: var(--shadow);
+            text-align: left;
+        }
+
+        .stat-value {
+            display: block;
+            margin-bottom: 8px;
+            color: #ffffff;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            color: var(--text-soft);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        .investment-section {
+            position: relative;
+            overflow: hidden;
+            padding: 38px;
+            border-radius: 34px;
+            border: 1px solid var(--line);
+            background: linear-gradient(180deg, rgba(8, 28, 45, 0.88), rgba(11, 35, 55, 0.8));
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow);
+        }
+
+        .investment-section::before {
+            content: "";
+            position: absolute;
+            inset: auto -60px -90px auto;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(45, 212, 191, 0.26), transparent 70%);
+            filter: blur(6px);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .section-heading h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            line-height: 1;
+            letter-spacing: -0.04em;
+        }
+
+        .section-heading p {
+            max-width: 420px;
+            color: var(--text-soft);
+            line-height: 1.7;
+            text-align: right;
+        }
+
+        .tabs {
+            display: inline-grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 30px;
+            padding: 10px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .tab {
+            padding: 15px 18px;
+            border-radius: 18px;
+            cursor: pointer;
+            text-align: center;
+            color: var(--text-soft);
+            font-weight: 600;
+            transition: background 0.25s ease, transform 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .tab:hover {
+            color: var(--text-main);
+            transform: translateY(-1px);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, rgba(45, 212, 191, 0.18), rgba(56, 189, 248, 0.18));
+            color: #ffffff;
+            box-shadow: inset 0 0 0 1px rgba(45, 212, 191, 0.18);
+        }
+
+        .calculator {
+            display: none;
+            animation: panelFade 0.4s ease;
+        }
+
+        .calculator.active {
+            display: block;
+        }
+
+        @keyframes panelFade {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .calculator-header {
+            margin-bottom: 22px;
+        }
+
+        .calculator-kicker {
+            display: inline-block;
+            margin-bottom: 12px;
+            color: #9cf6ea;
+            font-size: 0.84rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .calculator-header h1 {
+            margin-bottom: 12px;
+            color: #ffffff;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            letter-spacing: -0.03em;
+        }
+
+        .calculator-header p {
+            max-width: 720px;
+            color: var(--text-soft);
+            line-height: 1.75;
+        }
+
+        .form-box {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+            gap: 24px;
+            align-items: stretch;
+        }
+
+        .container_input,
+        .chart-container,
+        .text_content {
+            border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+            box-shadow: 0 18px 44px rgba(2, 12, 23, 0.2);
+        }
+
+        .container_input {
+            padding: 28px;
+        }
+
+        .input-intro {
+            margin-bottom: 20px;
+        }
+
+        .input-intro h3 {
+            margin-bottom: 6px;
+            color: #ffffff;
+            font-size: 1.2rem;
+        }
+
+        .input-intro p {
+            color: var(--text-soft);
+            line-height: 1.6;
+            font-size: 0.94rem;
+        }
+
+        .field {
+            margin-bottom: 18px;
+            padding: 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .field:last-of-type {
+            margin-bottom: 24px;
+        }
+
+        .field-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            color: #e8f7ff;
+            font-size: 0.96rem;
+            font-weight: 600;
+        }
+
+        .field-tip {
+            color: #8ddfd6;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            margin-bottom: 14px;
+            padding: 14px 16px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(5, 19, 31, 0.72);
+            color: #ffffff;
+            font-size: 1rem;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: rgba(45, 212, 191, 0.72);
+            box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.12);
+            transform: translateY(-1px);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(45, 212, 191, 0.75), rgba(56, 189, 248, 0.75));
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border: 3px solid rgba(4, 18, 30, 0.95);
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 8px 18px rgba(56, 189, 248, 0.35);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 22px;
+            height: 22px;
+            border: 3px solid rgba(4, 18, 30, 0.95);
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 8px 18px rgba(56, 189, 248, 0.35);
+        }
+
+        button {
+            width: 100%;
+            padding: 16px 20px;
+            border: none;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--accent), #38bdf8);
+            color: #062132;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            box-shadow: 0 18px 30px rgba(20, 184, 166, 0.24);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 22px 36px rgba(20, 184, 166, 0.3);
+            filter: saturate(1.08);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .result-card {
+            padding: 16px;
+            border-radius: 18px;
+            background: rgba(45, 212, 191, 0.08);
+            border: 1px solid rgba(45, 212, 191, 0.12);
+            animation: resultFadeIn 0.35s ease;
+        }
+
+        .result-label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--text-soft);
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .result-value {
+            color: #ffffff;
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        @keyframes resultFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chart-container {
+            min-height: 100%;
+            padding: 26px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .chart-title {
+            margin-bottom: 14px;
+            color: #ffffff;
+            font-size: 1.08rem;
+            font-weight: 600;
+        }
+
+        .chart-copy {
+            margin-bottom: 18px;
+            color: var(--text-soft);
+            line-height: 1.6;
+            font-size: 0.92rem;
+        }
+
+        .chart-shell {
+            position: relative;
+            min-height: 280px;
+        }
+
+        .text_content {
+            margin-top: 24px;
+            padding: 24px 26px;
+        }
+
+        .text_content h3 {
+            margin-bottom: 12px;
+            color: #ffffff;
+            font-size: 1.25rem;
+        }
+
+        .text_content p,
+        .text_content li {
+            color: var(--text-soft);
+            font-size: 0.98rem;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 1040px) {
+            .topbar {
+                width: calc(100% - 24px);
+            }
+
+            .main-content {
+                width: calc(100% - 24px);
+            }
+
+            .form-box {
+                grid-template-columns: 1fr;
+            }
+
+            .section-heading {
+                align-items: start;
+                flex-direction: column;
+            }
+
+            .section-heading p {
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 860px) {
+            .topbar {
+                flex-wrap: wrap;
+            }
+
+            .menu-btn {
+                display: inline-flex;
+            }
+
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 14px;
+                padding-top: 8px;
+            }
+
+            .nav-links.show-menu {
+                display: flex;
+            }
+
+            .nav-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding-top: 28px;
+                padding-bottom: 56px;
+            }
+
+            .investment-section {
+                padding: 22px;
+                border-radius: 26px;
+            }
+
+            .tabs {
+                grid-template-columns: 1fr;
+            }
+
+            .container_input,
+            .chart-container,
+            .text_content {
+                border-radius: 22px;
+            }
+
+            .field-header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .nav-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+   <header class="topbar" id="topbar">
+            <a href="bt.html" class="brand" aria-label="Budgeting Tool home">
+                <span class="brand-mark">$</span>
+                <span>Budgeting Tool</span>
+            </a>
+
+            <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
+
+            <ul class="nav-links" id="navLinks">
+               <li><a href="bt.html">Expenses Tracker</a></li>
+                <li><a href="investment.html">planner</a></li>
+                <li><a href="healthinsurance.html">Health Insurance</a></li>
+                <li><a href="sipcalculator.html">Financial Calculator</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a class="btn btn-primary" href="bt.html" role="button">Start Tracking</a>
+            </div>
+        </header>
+
+
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <section class="main-content">
+        <div class="hero-header">
+            <div class="eyebrow">Plan Better • Grow Smarter</div>
+            <h1 class="animate__animated animate__fadeInDown">Financial Calculator</h1>
+            <p class="animate__animated animate__fadeInUp">Model SIP growth, compare EMI impact, and estimate fixed deposit returns with a cleaner dashboard designed to make decisions feel easier.</p>
+            <div class="header-decoration">
+                <div class="decoration-line"></div>
+                <div class="decoration-dot"></div>
+                <div class="decoration-line"></div>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <span class="stat-value">3 calculators</span>
+                    <span class="stat-label">Compare deposits, loan costs, and long-term SIP growth in one place.</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">Live sliders</span>
+                    <span class="stat-label">Adjust values quickly and test different scenarios without friction.</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">Visual breakdowns</span>
+                    <span class="stat-label">Instant charts help you see principal, interest, and future value clearly.</span>
+                </div>
+            </div>
+        </div>
+
+    <section class="investment-section">
+        <div class="section-heading">
+            <div>
+                <h2>Choose your calculator</h2>
+            </div>
+            <p>Switch between calculators, adjust your assumptions, and use the chart to understand where your money is going.</p>
+        </div>
+        <div class="container">
+            <div class="tabs">
+                <div class="tab active" onclick="showCalculator('fd')">Fixed Deposit</div>
+                <div class="tab" onclick="showCalculator('emi')">EMI</div>
+                <div class="tab" onclick="showCalculator('sip')">SIP</div>
+            </div>
+    
+            <div id="fd" class="calculator active">
+                <div class="calculator-header">
+                    <span class="calculator-kicker">Safe Returns</span>
+                    <h1>Fixed Deposit Calculator</h1>
+                    <p>Estimate maturity value and interest earned for a one-time deposit over your selected tenure.</p>
+                </div>
+                <div class="form-box">
+                    <div class="container_input">
+                        <div class="input-intro">
+                            <h3>Enter deposit details</h3>
+                            <p>Tune the amount, rate, and tenure to see how your deposit grows.</p>
+                        </div>
+                        <div class="field">
+                            <div class="field-header">
+                                <label for="investment">Total Investment</label>
+                                <span class="field-tip">One-time amount</span>
+                            </div>
+                            <input type="number" id="investment" min="0" max="100000" step="1000" value="0">
+                            <input type="range" id="monthly-investment-slider" min="0" max="100000" step="1000" value="0">
+                        </div>
+                        <div class="field">
+                            <div class="field-header">
+                                <label for="interest">Rate of Interest</label>
+                                <span class="field-tip">Annual percentage</span>
+                            </div>
+                            <input type="number" id="interest" min="0" max="20" step="1" value="1">
+                            <input type="range" id="interest-rate-slider" min="1" max="20" step="1" value="1">
+                        </div>
+                        <div class="field">
+                            <div class="field-header">
+                                <label for="duration">Time Period (Years)</label>
+                                <span class="field-tip">Investment duration</span>
+                            </div>
+                            <input type="number" id="duration" min="0" max="50" step="1" value="0">
+                            <input type="range" id="time-period-slider" min="0" max="50" step="5" value="0">
+                        </div>
+                        <button onclick="calculateFD()">Calculate</button>
+                        <div id="result-fd" ></div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title">Return split</div>
+                        <div class="chart-copy">View the difference between your deposited principal and the projected gains.</div>
+                        <div class="chart-shell">
+                            <canvas id="chart-fd"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="text_content">
+                    <h3>FD Calculator: Fixed Deposit Calculator</h3>
+                    <p>An FD calculator is a tool that helps you determine the maturity amount and interest earned on your fixed deposit investment.</p>
+                </div>
+            </div>
+    
+            <div id="emi" class="calculator">
+                <div class="calculator-header">
+                    <span class="calculator-kicker">Borrowing Costs</span>
+                    <h1>EMI Calculator</h1>
+                    <p>See your estimated monthly EMI, total interest payout, and full repayment value before committing to a loan.</p>
+                </div>
+                <div class="form-box">
+                    <div class="container_input">
+                        <div class="input-intro">
+                            <h3>Enter loan details</h3>
+                            <p>Adjust the principal, interest rate, and repayment period to explore affordability.</p>
+                        </div>
+                        <div class="field">
+                            <div class="field-header">
+                                <label for="loanAmount">Loan Amount</label>
+                                <span class="field-tip">Principal borrowed</span>
+                            </div>
+                            <input type="number" id="loanAmount" min="0" max="5000000" step="1000" value="0">
+                            <input type="range" id="loan-amount-slider" min="0" max="5000000" step="1000" value="0">
+                        </div>
+                        <div class="field">
+                            <div class="field-header">
+                                <label for="interestRate">Rate of Interest</label>
+                                <span class="field-tip">Annual percentage</span>
+                            </div>
+                            <input type="number" id="interestRate" min="0" max="25" step="1" value="1">
+                            <input type="range" id="interest-rate-slider-emi" min="1" max="25" step="1" value="1">
+                        </div>
+                        <div class="field">
+                            <div class="field-header">
+                                <label for="loanTerm">Loan Term (Months)</label>
+                                <span class="field-tip">Repayment duration</span>
+                            </div>
+                            <input type="number" id="loanTerm" min="0" max="600" step="1" value="0">
+                            <input type="range" id="time-period-slider-emi" min="0" max="600" step="1" value="0">
+                        </div>
+                        <button onclick="calculateEMI()">Calculate</button>
+                        <div id="result-emi"></div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title">Payment mix</div>
+                        <div class="chart-copy">Understand how much of the total payout goes toward principal versus interest.</div>
+                        <div class="chart-shell">
+                            <canvas id="chart-emi"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="text_content">
+                    <h3>EMI Calculator: Equated Monthly Installment Calculator</h3>
+                    <p>An EMI calculator is a tool that helps you determine the monthly installment you will have to pay when taking a loan.</p>
+                </div>
+            </div>
+    
+            <div id="sip" class="calculator">
+                <div class="calculator-header">
+                    <span class="calculator-kicker">Long-Term Wealth</span>
+                    <h1>SIP Calculator</h1>
+                    <p>Project how monthly investments can compound into future wealth over time at your chosen return rate.</p>
+                </div>
+                <div class="form-box">
+                    <div class="container_input">
+                        <div class="input-intro">
+                            <h3>Enter SIP details</h3>
+                            <p>Test contribution levels, expected returns, and horizon to plan your target corpus.</p>
+                        </div>
+                        <div class="field">
+                            <div class="field-header">
+                                <label for="monthly-investment">Monthly SIP Amount</label>
+                                <span class="field-tip">Recurring contribution</span>
+                            </div>
+                            <input type="number" id="monthly-investment" min="0" max="50000" step="500" value="0">
+                            <input type="range" id="monthly-investment-slider-sip" min="0" max="50000" step="500" value="0">
+                        </div>
+                        <div class="field">
+                            <div class="field-header">
+                                <label for="interest-rate-sip">Rate of Interest</label>
+                                <span class="field-tip">Expected annual return</span>
+                            </div>
+                            <input type="number" id="interest-rate-sip" min="1" max="25" step="1" value="1">
+                            <input type="range" id="interest-rate-slider-sip" min="1" max="25" step="1" value="1">
+                        </div>
+                        <div class="field">
+                            <div class="field-header">
+                                <label for="time-period-sip">Time Period (Years)</label>
+                                <span class="field-tip">Investment horizon</span>
+                            </div>
+                            <input type="number" id="time-period-sip" min="0" max="50" step="1" value="0">
+                            <input type="range" id="time-period-slider-sip" min="0" max="50" step="5" value="0">
+                        </div>
+                        <button onclick="calculateSIP()">Calculate</button>
+                        <div id="result-sip"></div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title">Growth breakdown</div>
+                        <div class="chart-copy">See how much of the future value comes from your contributions and how much comes from returns.</div>
+                        <div class="chart-shell">
+                            <canvas id="chart-sip"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="text_content">
+                    <h3>SIP Calculator: Systematic Investment Plan Calculator</h3>
+                    <p>A SIP calculator is a tool that helps you determine the returns you can avail when parking your funds in mutual funds.</p>
+                </div>
+            </div>
+        </div>
+    
+      </section>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const navbarMenu = document.getElementById("navLinks");
+        const hamburgerBtn = document.getElementById("menuBtn");
+        const chartInstances = {};
+        const currencyFormatter = new Intl.NumberFormat("en-IN", {
+            style: "currency",
+            currency: "INR",
+            maximumFractionDigits: 0
+        });
+
+        if (hamburgerBtn && navbarMenu) {
+            hamburgerBtn.addEventListener("click", () => {
+                navbarMenu.classList.toggle("show-menu");
+                const isExpanded = navbarMenu.classList.contains("show-menu");
+                hamburgerBtn.setAttribute("aria-expanded", String(isExpanded));
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        function showCalculator(calculatorId) {
+            const calculators = document.querySelectorAll('.calculator');
+            calculators.forEach(calc => calc.classList.remove('active'));
+
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            document.getElementById(calculatorId).classList.add('active');
+            document.querySelector(`[onclick="showCalculator('${calculatorId}')"]`).classList.add('active');
+        }
+
+        function formatCurrency(value) {
+            return currencyFormatter.format(Number.isFinite(value) ? value : 0);
+        }
+
+        function renderResult(targetId, metrics) {
+            const target = document.getElementById(targetId);
+            target.innerHTML = `
+                <div class="results-grid">
+                    ${metrics.map(metric => `
+                        <div class="result-card">
+                            <span class="result-label">${metric.label}</span>
+                            <span class="result-value">${formatCurrency(metric.value)}</span>
+                        </div>
+                    `).join("")}
+                </div>
+            `;
+        }
+
+        function renderChart(canvasId, labels, data) {
+            const chartCanvas = document.getElementById(canvasId);
+            if (chartInstances[canvasId]) {
+                chartInstances[canvasId].destroy();
+            }
+
+            chartInstances[canvasId] = new Chart(chartCanvas.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels,
+                    datasets: [{
+                        data,
+                        backgroundColor: ['#2dd4bf', '#38bdf8', '#f59e0b'],
+                        borderColor: 'rgba(8, 28, 45, 0.95)',
+                        borderWidth: 3,
+                        hoverOffset: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#d9eff9',
+                                padding: 18,
+                                font: {
+                                    family: 'Poppins'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function calculateFD() {
+            const investment = parseFloat(document.getElementById('investment').value) || 0;
+            const interest = parseFloat(document.getElementById('interest').value) || 0;
+            const duration = parseFloat(document.getElementById('duration').value) || 0;
+
+            const futureValue = investment * (1 + (interest / 100) * duration);
+            const returns = futureValue - investment;
+
+            renderResult('result-fd', [
+                { label: 'Investment', value: investment },
+                { label: 'Returns', value: returns },
+                { label: 'Maturity Value', value: futureValue }
+            ]);
+
+            renderChart('chart-fd', ['Investment', 'Returns'], [investment, Math.max(returns, 0)]);
+        }
+
+        function calculateEMI() {
+            const loanAmount = parseFloat(document.getElementById('loanAmount').value) || 0;
+            const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+            const loanTerm = parseFloat(document.getElementById('loanTerm').value) || 0;
+
+            if (!loanAmount || !interestRate || !loanTerm) {
+                renderResult('result-emi', [
+                    { label: 'Monthly EMI', value: 0 },
+                    { label: 'Total Interest', value: 0 },
+                    { label: 'Total Payment', value: 0 }
+                ]);
+                renderChart('chart-emi', ['Principal', 'Interest'], [0, 0]);
+                return;
+            }
+
+            const monthlyInterestRate = (interestRate / 100) / 12;
+            const emi = (loanAmount * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, loanTerm)) / (Math.pow(1 + monthlyInterestRate, loanTerm) - 1);
+            const totalPayment = emi * loanTerm;
+            const totalInterest = totalPayment - loanAmount;
+
+            renderResult('result-emi', [
+                { label: 'Monthly EMI', value: emi },
+                { label: 'Total Interest', value: totalInterest },
+                { label: 'Total Payment', value: totalPayment }
+            ]);
+
+            renderChart('chart-emi', ['Loan Amount', 'Interest'], [loanAmount, Math.max(totalInterest, 0)]);
+        }
+
+        function calculateSIP() {
+            const monthlyInvestment = parseFloat(document.getElementById('monthly-investment').value) || 0;
+            const interestRate = parseFloat(document.getElementById('interest-rate-sip').value) || 0;
+            const timePeriod = parseFloat(document.getElementById('time-period-sip').value) || 0;
+
+            const monthlyInterestRate = (interestRate / 100) / 12;
+            const totalMonths = timePeriod * 12;
+            let futureValue = 0;
+
+            for (let i = 0; i < totalMonths; i++) {
+                futureValue += monthlyInvestment + (futureValue * monthlyInterestRate);
+            }
+
+            const totalInvestment = monthlyInvestment * totalMonths;
+            const totalReturns = futureValue - totalInvestment;
+
+            renderResult('result-sip', [
+                { label: 'Total Investment', value: totalInvestment },
+                { label: 'Total Returns', value: totalReturns },
+                { label: 'Future Value', value: futureValue }
+            ]);
+
+            renderChart('chart-sip', ['Investment', 'Returns'], [totalInvestment, Math.max(totalReturns, 0)]);
+        }
+
+        document.getElementById('monthly-investment-slider').addEventListener('input', function() {
+            document.getElementById('investment').value = this.value;
+        });
+
+        document.getElementById('interest-rate-slider').addEventListener('input', function() {
+            document.getElementById('interest').value = this.value;
+        });
+
+        document.getElementById('time-period-slider').addEventListener('input', function() {
+            document.getElementById('duration').value = this.value;
+        });
+
+        document.getElementById('loan-amount-slider').addEventListener('input', function() {
+            document.getElementById('loanAmount').value = this.value;
+        });
+
+        document.getElementById('interest-rate-slider-emi').addEventListener('input', function() {
+            document.getElementById('interestRate').value = this.value;
+        });
+
+        document.getElementById('time-period-slider-emi').addEventListener('input', function() {
+            document.getElementById('loanTerm').value = this.value;
+        });
+
+        document.getElementById('monthly-investment-slider-sip').addEventListener('input', function() {
+            document.getElementById('monthly-investment').value = this.value;
+        });
+
+        document.getElementById('interest-rate-slider-sip').addEventListener('input', function() {
+            document.getElementById('interest-rate-sip').value = this.value;
+        });
+
+        document.getElementById('time-period-slider-sip').addEventListener('input', function() {
+            document.getElementById('time-period-sip').value = this.value;
+        });
+    </script>
+</body>
+</html>

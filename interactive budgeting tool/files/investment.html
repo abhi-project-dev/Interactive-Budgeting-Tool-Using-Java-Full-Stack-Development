@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investing Plans App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --text-main: #ffffff;
+            --text-soft: rgba(255, 255, 255, 0.8);
+            --accent: #7c3aed;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            color: white;
+        }
+                .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            width: min(1200px, calc(100% - 32px));
+            margin: 18px auto 0;
+            padding: 14px 20px;
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            background: rgba(4, 18, 30, 0.7);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 18px 40px rgba(2, 12, 23, 0.22);
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+        }
+
+        .brand-mark {
+            display: grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #eb34d3, #38bdf8);
+            color: #042436;
+            font-size: 1.2rem;
+            font-weight: 700;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+            animation: pulseLogo 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseLogo {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.45); }
+            50% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(99, 102, 241, 0.08); }
+        }
+
+        .animate-card {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .animate-card.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .menu-btn {
+            display: none;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-main);
+            border-radius: 14px;
+            padding: 10px 14px;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-soft);
+            text-decoration: none;
+            font-size: 0.96rem;
+            transition: color 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 2px;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus-visible,
+        .nav-links a.active {
+            color: var(--text-main);
+            transform: translateY(-1px);
+            border-color: #38bdf8;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('/files/images/h.jpg') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: fadeInDown 1.5s ease;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            animation: fadeInUp 1.5s ease;
+        }
+
+        .hero .cta-btn {
+            padding: 15px 30px;
+            background: #6200ea;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            animation: fadeIn 2s ease;
+        }
+
+        .hero .cta-btn:hover {
+            background: #3700b3;
+        }
+
+        section {
+            padding: 60px 20px;
+            background: white;
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #6200ea;
+            text-align: center;
+            animation: fadeInDown 1s ease;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            background: #5ccfe3;
+        }
+
+        .card i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #6200ea;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .card p {
+            font-size: 1rem;
+            text-align: center;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .grid-container {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
+        .scroll-to-top {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(120deg, #6200ea, #38bdf8);
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.32);
+            animation: floatButton 3s ease-in-out infinite;
+            z-index: 1200;
+        }
+
+        .scroll-to-top.show {
+            display: flex;
+        }
+
+        @keyframes floatButton {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        #frame{
+           margin: 0; 
+        }
+    </style>
+</head>
+<body>
+  <header class="topbar" id="topbar">
+            <a href="bt.html" class="brand" aria-label="Budgeting Tool home">
+                <span class="brand-mark">$</span>
+                <span>Budgeting Tool</span>
+            </a>
+
+            <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
+
+            <ul class="nav-links" id="navLinks">
+               <li><a href="bt.html">Expenses Tracker</a></li>
+                <li><a href="investment.html">planner</a></li>
+                <li><a href="healthinsurance.html">Health Insurance</a></li>
+                <li><a href="sipcalculator.html">Financial Calculator</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </header>
+
+    <main>
+        <!-- Quick Actions + Plan Filter -->
+        <section id="quick-actions" class="animate__animated animate__fadeInUp" style="margin-top: 88px;">
+            <h2>Quick Access</h2>
+            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+                <div class="card" style="cursor:auto; background: #ffffff;"> 
+                    <i class="fas fa-search"></i>
+                    <h3>Find plans</h3>
+                    <p>Filter the investing models as you type.</p>
+                </div>
+                <div class="card" style="cursor:auto; background: #ffffff;">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Smart advice</h3>
+                    <p>Get suggestions based on your risk appetite.</p>
+                </div>
+                <div class="card" style="cursor:auto; background: #ffffff;">
+                    <i class="fas fa-user-shield"></i>
+                    <h3>Secure login</h3>
+                    <p>Privacy-first experience for your data.</p>
+                </div>
+            </div>
+            <input id="planFilter" type="search" placeholder="Search plan model..." style="width:100%; max-width:480px; margin:20px auto 0; display:block; padding:12px 14px; border-radius:10px; border: 1px solid #ccc;" aria-label="Filter investing plan cards">
+        </section>
+
+        <!-- Investing Plans App Models -->
+        <section id="models" class="animate__animated animate__fadeInUp">
+            <h2>Investing Planning Models</h2>
+            <div class="grid-container">
+                <div class="card" onclick="app()">
+                    
+                    <i class="fas fa-chart-line"></i>
+                     <h3>Stocks</h3>
+                    <p>Invest in top-performing stocks for long-term growth.</p>
+                </div>
+                <div class="card" onclick="pp()">
+                    <i class="fas fa-coins"></i>
+                    <h3>Crypto</h3>
+                    <p>Diversify your portfolio with cryptocurrencies.</p>
+                </div>
+                <div class="card" onclick="p()">
+                    <i class="fas fa-landmark"></i>
+                    <h3>Bonds</h3>
+                    <p>Secure investments with government and corporate bonds.</p>
+                </div>
+                <div class="card" onclick="apps()">
+                    <i class="fas fa-gem"></i>
+                    <h3>Commodities</h3>
+                    <p>Invest in gold, silver, and other precious metals.</p>
+                </div>
+                <div class="card" onclick="mf()">
+                    <i class="fas fa-piggy-bank"></i>
+                    <h3>Mutual Funds</h3>
+                    <p>Grow your wealth with professionally managed funds.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advantages of Investing Plans -->
+        <section id="advantages" class="animate__animated animate__fadeInUp">
+            <h2>Advantages of Investing Plans</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Diversification</h3>
+                    <p>Spread your investments across multiple assets to reduce risk.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-chart-pie"></i>
+                    <h3>Wealth Growth</h3>
+                    <p>Grow your wealth over time with smart investments.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Financial Security</h3>
+                    <p>Secure your future with stable and reliable investments.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits for Users -->
+        <section id="benefits" class="animate__animated animate__fadeInUp">
+            <h2>Benefits for Users</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <i class="fas fa-user"></i>
+                    <h3>Personalized Plans</h3>
+                    <p>Get tailored investment plans based on your goals.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Time-Saving</h3>
+                    <p>Automate your investments and save time.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <h3>Cost-Effective</h3>
+                    <p>Low fees and high returns for maximum profitability.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Role of Investing Plans in Recent Years -->
+        <section id="role" class="animate__animated animate__fadeInUp">
+            <h2>Role of Investing Plans in Recent Years</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <i class="fas fa-globe"></i>
+                    <h3>Global Reach</h3>
+                    <p>Invest in global markets for better opportunities.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-chart-bar"></i>
+                    <h3>Market Trends</h3>
+                    <p>Stay updated with the latest market trends and insights.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-users"></i>
+                    <h3>Community Support</h3>
+                    <p>Join a community of like-minded investors.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stages of Investing Plans App Development -->
+        <section id="stages" class="animate__animated animate__fadeInUp">
+            <h2>Stages of Investing Plans App Development</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <i class="fas fa-pencil-ruler"></i>
+                    <h3>Design</h3>
+                    <p>Create intuitive and user-friendly interfaces.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-cogs"></i>
+                    <h3>Development</h3>
+                    <p>Build robust features for investment tracking.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Testing & Release</h3>
+                    <p>Test thoroughly and launch the app for users.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button class="scroll-to-top" id="scrollTopBtn" aria-label="Scroll to top">↑</button>
+
+    <script>
+        // Section reveal animation
+        const cards = document.querySelectorAll('.card');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, { threshold: 0.25 });
+        cards.forEach(card => {
+            card.classList.add('animate-card');
+            observer.observe(card);
+        });
+
+        // Scroll to top
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 280) {
+                scrollTopBtn.classList.add('show');
+            } else {
+                scrollTopBtn.classList.remove('show');
+            }
+
+            const sectionLinks = document.querySelectorAll('.nav-links a');
+            document.querySelectorAll('section').forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 80 && rect.bottom > 80) {
+                    sectionLinks.forEach(link => link.classList.remove('active'));
+                    const activeLink = document.querySelector(`.nav-links a[href='#${section.id}']`);
+                    if (activeLink) activeLink.classList.add('active');
+                }
+            });
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Filter cards
+        const planFilter = document.getElementById('planFilter');
+        planFilter.addEventListener('input', (event) => {
+            const query = event.target.value.toLowerCase().trim();
+            document.querySelectorAll('#models .card').forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(query) ? 'flex' : 'none';
+            });
+        });
+
+        // Smooth scroll for anchor links (tooltip-friendly)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+
+        // Invest plan navigation
+        function app(){ window.open('stocks.html', '_blank'); }
+        function pp(){ window.open('CRYPTO.html', '_blank'); }
+        function p(){ window.open('bonds.html', '_blank'); }
+        function apps(){ window.open('commodities.html', '_blank'); }
+        function mf(){ window.open('mutualfunds.html', '_blank'); }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budgeting Tool Responsive Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg: #f4efe6;
+            --surface: rgba(255, 255, 255, 0.82);
+            --surface-strong: #fffaf3;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --primary: #0f766e;
+            --primary-dark: #115e59;
+            --accent: #f59e0b;
+            --accent-soft: #fde6b1;
+            --border: rgba(15, 118, 110, 0.12);
+            --shadow: 0 18px 45px rgba(31, 41, 55, 0.12);
+            --radius-lg: 28px;
+            --radius-md: 18px;
+            --radius-sm: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(245, 158, 11, 0.22), transparent 28%),
+                radial-gradient(circle at top right, rgba(15, 118, 110, 0.2), transparent 22%),
+                linear-gradient(180deg, #fcfaf6 0%, #f2ece2 100%);
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .page-shell {
+            width: min(1180px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 24px 0 48px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            padding: 16px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            border-radius: 999px;
+            background: rgba(255, 250, 243, 0.72);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 16px;
+            z-index: 20;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+        }
+
+        .brand-mark {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--primary), #14b8a6);
+            color: #fff;
+            font-size: 1.2rem;
+            box-shadow: 0 12px 24px rgba(15, 118, 110, 0.28);
+        }
+
+        .menu-btn {
+            display: none;
+            border: none;
+            background: transparent;
+            font-size: 1.7rem;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            color: var(--primary);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 999px;
+            padding: 12px 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .btn:hover,
+        .btn:focus-visible {
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(31, 41, 55, 0.12);
+            color: var(--text);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #0d9488);
+            color: #fff;
+            box-shadow: 0 14px 24px rgba(15, 118, 110, 0.25);
+        }
+
+        .btn-signin {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: 2px solid transparent;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-signin::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-signin:hover::before {
+            left: 100%;
+        }
+
+        .btn-signin:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            box-shadow: 0 12px 28px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .btn-signin .signin-icon {
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-signin:hover .signin-icon {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        .btn-signin .signin-text {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 28px;
+            align-items: stretch;
+            margin-top: 28px;
+            min-height: 540px;
+        }
+
+        .hero-copy,
+        .planner-card,
+        .stat-card,
+        .feature-card,
+        .tip-card {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.65);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(16px);
+        }
+
+        .hero-copy {
+            padding: 36px;
+            position: relative;
+            overflow: hidden;
+            min-height: 540px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background:
+                linear-gradient(135deg, rgba(255, 250, 243, 0.86), rgba(255, 255, 255, 0.7)),
+                url("images/hero-bg.jpg") center/cover no-repeat;
+        }
+
+        .hero-copy::after {
+            content: "";
+            position: absolute;
+            right: -70px;
+            bottom: -80px;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.22), transparent 65%);
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: #8a5b00;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        h1 {
+            font-size: clamp(2.4rem, 5vw, 4.6rem);
+            line-height: 0.98;
+            max-width: 10ch;
+        }
+
+        .hero-copy p {
+            margin-top: 18px;
+            max-width: 58ch;
+            color: var(--muted);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 28px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-top: 24px;
+            width: min(860px, 100%);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-visual {
+            margin-top: 26px;
+            display: grid;
+            grid-template-columns: 0.95fr 1.05fr;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .hero-visual img {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+            border-radius: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 12px 28px rgba(31, 41, 55, 0.14);
+        }
+
+        .stat-card {
+            padding: 20px;
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.72);
+        }
+
+        .stat-card span {
+            display: block;
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+
+        .stat-card strong {
+            font-size: 1.8rem;
+        }
+
+        .planner-card {
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .planner-head h2 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .planner-head p,
+        .field label,
+        .tip-card p,
+        .feature-card p {
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .field input[type="number"],
+        .field input[type="range"] {
+            width: 100%;
+        }
+
+        .field input[type="number"] {
+            padding: 14px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.92);
+            font-size: 1rem;
+        }
+
+        .field input[type="range"] {
+            accent-color: var(--primary);
+        }
+
+        .results {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .result-box {
+            padding: 16px;
+            background: var(--surface-strong);
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(15, 118, 110, 0.08);
+        }
+
+        .result-box span {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .result-box strong {
+            font-size: 1.35rem;
+        }
+
+        .progress-wrap {
+            background: rgba(15, 118, 110, 0.08);
+            border-radius: 999px;
+            height: 14px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: inherit;
+            transition: width 0.35s ease;
+        }
+
+        .chart-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--surface-strong);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(15, 118, 110, 0.08);
+        }
+
+        .chart-container h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--text);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .chart-container canvas {
+            max-width: 100%;
+            height: 220px;
+            max-height: 260px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 760px) {
+            .chart-container canvas {
+                height: 180px;
+                max-height: 220px;
+            }
+        }
+
+        .summary-note {
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            background: rgba(245, 158, 11, 0.12);
+            color: #7c5500;
+            font-weight: 600;
+        }
+
+        .section {
+            margin-top: 28px;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .section-heading h2 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            max-width: 56ch;
+        }
+
+        .feature-grid,
+        .tips-grid {
+            display: grid;
+            gap: 18px;
+            width: 100%;
+        }
+
+        .feature-grid {
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            align-items: start;
+        }
+
+        .tips-grid {
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            align-items: start;
+        }
+
+        .feature-card,
+        .tip-card {
+            padding: 26px;
+            min-height: 290px;
+            transition: transform 0.28s ease, box-shadow 0.28s ease;
+        }
+
+        .feature-card:hover,
+        .tip-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.16);
+            border-color: rgba(45, 212, 191, 0.35);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 18px;
+        }
+
+        .feature-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 18px;
+            font-size: 1.4rem;
+            color: #fff;
+        }
+
+        .feature-icon.teal {
+            background: linear-gradient(135deg, #0f766e, #14b8a6);
+        }
+
+        .feature-icon.gold {
+            background: linear-gradient(135deg, #d97706, #f59e0b);
+        }
+
+        .feature-icon.ink {
+            background: linear-gradient(135deg, #334155, #475569);
+        }
+
+        .feature-card h3,
+        .tip-card h3 {
+            margin-bottom: 10px;
+            font-size: 1.25rem;
+        }
+
+        .tip-list {
+            list-style: none;
+            display: grid;
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .tip-list li {
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(31, 41, 55, 0.06);
+        }
+
+        .footer {
+            margin-top: 28px;
+            padding: 20px 8px 8px;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .is-open .nav-links {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        @media (max-width: 980px) {
+            .hero,
+            .tips-grid,
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-copy,
+            .planner-card {
+                padding: 30px;
+            }
+
+            .hero,
+            .hero-copy {
+                min-height: auto;
+            }
+
+            .hero-grid,
+            .results {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 760px) {
+            .page-shell {
+                width: min(100% - 20px, 1180px);
+                padding-top: 14px;
+            }
+
+            .topbar {
+                border-radius: 28px;
+                align-items: center;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: calc(100% + 12px);
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+                padding: 24px;
+                border-radius: 24px;
+                background: rgba(255, 250, 243, 0.96);
+                box-shadow: var(--shadow);
+                transform: translateY(-10px);
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.25s ease, transform 0.25s ease;
+            }
+
+            .nav-actions .btn-primary {
+                display: none;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+                max-width: none;
+            }
+
+            .modal-header {
+                padding: 30px 20px 15px;
+            }
+
+            .signin-form {
+                padding: 20px;
+            }
+
+            .modal-footer {
+                padding: 15px 20px 20px;
+            }
+
+            .hero-copy,
+            .planner-card,
+            .feature-card,
+            .tip-card {
+                border-radius: 24px;
+            }
+
+            .field-row,
+            .hero-visual,
+            .hero-grid,
+            .results {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                max-width: 12ch;
+            }
+
+            .hero-visual img {
+                height: 150px;
+            }
+
+            .chart-container {
+                padding: 15px;
+            }
+
+            .chart-container h3 {
+                font-size: 1rem;
+                margin-bottom: 10px;
+            }
+        }
+         .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-height: 220px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 14px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 26px rgba(0, 0, 0, 0.16);
+            background: #f3f9ff;
+        }
+
+        .card img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .card p {
+            font-size: 1rem;
+            text-align: center;
+            color: #666;
+        }
+
+        @media (max-width: 100px) {
+            .hero-grid,
+            .grid-container {
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            }
+        }
+
+        @media (max-width: 100px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1.05rem;
+            }
+
+            .grid-container {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 16px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+        }
+
+        footer {
+            background: #6200ea;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <header class="topbar" id="topbar">
+            <a href="bt.html" class="brand" aria-label="Budgeting Tool home">
+                <span class="brand-mark">$</span>
+                <span>Budgeting Tool</span>
+            </a>
+
+            <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
+
+            <ul class="nav-links" id="navLinks">
+               <li><a href="bt.html">Expenses Tracker</a></li>
+                <li><a href="investment.html">planner</a></li>
+                <li><a href="healthinsurance.html">Health Insurance</a></li>
+                <li><a href="sipcalculator.html">Financial Calculator</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="signin.html" class="btn btn-signin">
+                    <span class="signin-icon">👤</span>
+                    <span class="signin-text">Sign In</span>
+                </a>
+                <a class="btn btn-primary" href="bt.html" role="button">Start Tracking</a>
+            </div>
+        </header>
+
+        <main>
+            <section class="hero">
+                <div class="hero-copy">
+                    <div>
+                        <div class="eyebrow">Smart budgeting for everyday life</div>
+                        <h1>Plan money with clarity, not stress.</h1>
+                        <p>
+                            This responsive page combines a polished landing section with a simple live budget planner.
+                            Adjust your income, savings target, and essential costs to see how much spending room you
+                            have left each month.
+                        </p>
+
+                        <div class="hero-actions">
+                            <a class="btn btn-primary" href="bt.html">Try the planner</a>
+                            <a class="btn btn-outline" href="investment.html">Explore features</a>
+                        </div>
+
+                        <div class="hero-visual">
+                            <img src="images/bg.jpg" alt="Budget planning workspace">
+                            <img src="images/ll.jpg" alt="Financial dashboard visual">
+                        </div>
+                    </div>
+
+                    <div class="hero-grid">
+                        <div class="stat-card">
+                            <span>Monthly savings trend</span>
+                            <strong>+18%</strong>
+                        </div>
+                        <div class="stat-card">
+                            <span>Expenses organized</span>
+                            <strong>12 categories</strong>
+                        </div>
+                        <div class="stat-card">
+                            <span>Goal completion</span>
+                            <strong>76%</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="planner-card" id="planner">
+                    <div class="planner-head">
+                        <h2>Budget Planner</h2>
+                        <p>Enter a few numbers and the page will calculate your remaining flexible budget automatically.</p>
+                    </div>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="income">Monthly income</label>
+                            <input id="income" type="number" value="75000" min="0" step="500">
+                        </div>
+                        <div class="field">
+                            <label for="expenses">Essential expenses</label>
+                            <input id="expenses" type="number" value="32000" min="0" step="500">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="savings">Savings target: <strong id="savingsValue">20%</strong></label>
+                        <input id="savings" type="range" min="5" max="60" value="20">
+                    </div>
+
+                    <div class="results">
+                        <div class="result-box">
+                            <span>Target savings</span>
+                            <strong id="targetSavings">Rs 15,000</strong>
+                        </div>
+                        <div class="result-box">
+                            <span>Free to spend</span>
+                            <strong id="remainingBudget">Rs 28,000</strong>
+                        </div>
+                        <div class="result-box">
+                            <span>Spent ratio</span>
+                            <strong id="spentRatio">43%</strong>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Budget balance</label>
+                        <div class="progress-wrap" aria-hidden="true">
+                            <div class="progress-bar" id="progressBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="summary-note" id="summaryNote">
+                        You are on track. Your current budget leaves room for lifestyle spending after savings.
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Budget Breakdown</h3>
+                        <canvas id="budgetChart"></canvas>
+                    </div>
+                </aside>
+            </section>
+
+            <section class="section" id="features">
+                <div class="section-heading">
+                    <div>
+                        <h2>Built for responsive budgeting</h2>
+                    </div>
+                    <p>The layout adapts from desktop to mobile, while the cards, planner, and navigation stay easy to use on smaller screens.</p>
+                </div>
+
+                <div class="feature-grid">
+                    <article class="feature-card">
+                        <img class="card-image" src="images/cal.jpg" alt="Budget calendar and planning">
+                        <div class="feature-icon teal">1</div>
+                        <h3>Fluid layout</h3>
+                        <p>Grid sections collapse smoothly into stacked cards so content remains readable on phones, tablets, and laptops.</p>
+                    </article>
+
+                    <article class="feature-card">
+                        <img class="card-image" src="images/bt.jpg" alt="Interactive budgeting tools">
+                        <div class="feature-icon gold">2</div>
+                        <h3>Interactive controls</h3>
+                        <p>JavaScript updates the totals and progress bar instantly, making the page feel alive instead of static.</p>
+                    </article>
+
+                    <article class="feature-card">
+                        <img class="card-image" src="images/p.jpg" alt="Modern finance themed background">
+                        <div class="feature-icon ink">3</div>
+                        <h3>Clean visual system</h3>
+                        <p>Soft gradients, rounded panels, and high-contrast text keep the page modern while staying practical for a finance product.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section tips-grid" id="tips">
+                <article class="tip-card">
+                    <img class="card-image" src="images/mf.jpg" alt="Saving and investment illustration">
+                    <h3>Quick budgeting tips</h3>
+                    <p>These small habits help turn a simple planner into a system you can stick with month after month.</p>
+                    <ul class="tip-list">
+                        <li>Separate fixed expenses from optional spending so the remaining number is meaningful.</li>
+                        <li>Set a savings percentage first, then shape the rest of the month around that goal.</li>
+                        <li>Review budgets weekly on mobile so small overspending does not snowball.</li>
+                    </ul>
+                </article>
+
+                <article class="tip-card" id="contact">
+                    <img class="card-image" src="images/signup-img.jpg" alt="Team discussing personal finance goals">
+                    <h3>Ready for the next step?</h3>
+                    <p>This page can be extended with charts, transaction tables, login forms, or connected budget categories if you want to turn it into a larger project page.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" type="button">Create Budget</button>
+                        <button class="btn btn-outline" type="button">See Demo</button>
+                    </div>
+                </article>
+</div>
+
+    <script>
+        const topbar = document.getElementById("topbar");
+        const menuBtn = document.getElementById("menuBtn");
+        const navLinks = document.getElementById("navLinks");
+        const incomeInput = document.getElementById("income");
+        const expensesInput = document.getElementById("expenses");
+        const savingsInput = document.getElementById("savings");
+        const savingsValue = document.getElementById("savingsValue");
+        const targetSavings = document.getElementById("targetSavings");
+        const remainingBudget = document.getElementById("remainingBudget");
+        const spentRatio = document.getElementById("spentRatio");
+        const progressBar = document.getElementById("progressBar");
+        const summaryNote = document.getElementById("summaryNote");
+        let budgetChart;
+
+        function formatCurrency(value) {
+            return "Rs " + Math.max(0, Math.round(value)).toLocaleString("en-IN");
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('budgetChart').getContext('2d');
+            budgetChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Essential Expenses', 'Savings', 'Free to Spend'],
+                    datasets: [{
+                        data: [0, 0, 0],
+                        backgroundColor: [
+                            '#ff6b6b', // Red for expenses
+                            '#4ecdc4', // Teal for savings
+                            '#45b7d1'  // Blue for free spending
+                        ],
+                        borderColor: [
+                            '#ffffff',
+                            '#ffffff',
+                            '#ffffff'
+                        ],
+                        borderWidth: 2,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                                    return label + ': ' + formatCurrency(value) + ' (' + percentage + '%)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateChart() {
+            const income = Number(incomeInput.value) || 0;
+            const expenses = Number(expensesInput.value) || 0;
+            const savingsPercent = Number(savingsInput.value) || 0;
+            const savingsAmount = income * (savingsPercent / 100);
+            const remaining = Math.max(0, income - expenses - savingsAmount);
+
+            if (budgetChart) {
+                budgetChart.data.datasets[0].data = [expenses, savingsAmount, remaining];
+                budgetChart.update();
+            }
+        }
+
+        function updatePlanner() {
+            const income = Number(incomeInput.value) || 0;
+            const expenses = Number(expensesInput.value) || 0;
+            const savingsPercent = Number(savingsInput.value) || 0;
+            const savingsAmount = income * (savingsPercent / 100);
+            const remaining = income - expenses - savingsAmount;
+            const spentPercent = income > 0 ? Math.min(100, Math.round((expenses / income) * 100)) : 0;
+            const budgetUsage = income > 0 ? Math.min(100, Math.max(0, Math.round(((expenses + savingsAmount) / income) * 100))) : 0;
+
+            savingsValue.textContent = savingsPercent + "%";
+            targetSavings.textContent = formatCurrency(savingsAmount);
+            remainingBudget.textContent = (remaining >= 0 ? formatCurrency(remaining) : "- " + formatCurrency(Math.abs(remaining)));
+            spentRatio.textContent = spentPercent + "%";
+            progressBar.style.width = budgetUsage + "%";
+
+            if (remaining > income * 0.2) {
+                summaryNote.textContent = "You are on track. Your current budget leaves room for lifestyle spending after savings.";
+                summaryNote.style.background = "rgba(15, 118, 110, 0.12)";
+                summaryNote.style.color = "#115e59";
+            } else if (remaining >= 0) {
+                summaryNote.textContent = "Your plan is balanced, but your flexible spending room is getting tighter. Keep an eye on smaller purchases.";
+                summaryNote.style.background = "rgba(245, 158, 11, 0.16)";
+                summaryNote.style.color = "#8a5b00";
+            } else {
+                summaryNote.textContent = "Your current inputs go over budget. Lower expenses or reduce the savings target to bring the month back into balance.";
+                summaryNote.style.background = "rgba(220, 38, 38, 0.14)";
+                summaryNote.style.color = "#991b1b";
+            }
+
+            updateChart();
+        }
+
+        function toggleMenu() {
+            const open = topbar.classList.toggle("is-open");
+            menuBtn.setAttribute("aria-expanded", String(open));
+        }
+
+        menuBtn.addEventListener("click", toggleMenu);
+        [incomeInput, expensesInput].forEach((input) => input.addEventListener("input", updatePlanner));
+        savingsInput.addEventListener("input", updatePlanner);
+        navLinks.querySelectorAll("a").forEach((link) => {
+            link.addEventListener("click", () => {
+                topbar.classList.remove("is-open");
+                menuBtn.setAttribute("aria-expanded", "false");
+            });
+        });
+
+        initChart();
+        updatePlanner();
+    </script>
+    </body>
+</html>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Plans</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            color: #333;
+        }
+
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            color: white;
+        }
+
+        .navbar .hamburger-btn {
+            display: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .navbar .logo img {
+            width: 40px;
+            border-radius: 50%;
+        }
+
+        .navbar .logo h2 {
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.7rem;
+            margin-left: 10px;
+        }
+
+        .navbar .links {
+            display: flex;
+            gap: 35px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .navbar .close-btn {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            display: none;
+            color: #000;
+            cursor: pointer;
+        }
+
+        .navbar .links a {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .navbar .links a:hover {
+            color: #19e8ff;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('/files/images/mf.jpg') no-repeat center center/cover;
+            color: rgb(250, 247, 254);
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+        }
+
+        .hero .cta-btn {
+            padding: 15px 30px;
+            background: #6200ea;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .hero .cta-btn:hover {
+            background: #3700b3;
+        }
+
+        .investment-section {
+            padding: 60px 20px;
+            background: rgba(247, 250, 250, 0.834);
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.623);
+            background-color: #ffffff8b;
+        }
+
+        .investment-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #6806fa;
+            text-align: center;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: #fcfbfb;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.376);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            background: #3ae1ffc0;
+        }
+
+        .card img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+        }
+
+        .card p {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .navbar .hamburger-btn {
+                display: block;
+            }
+
+            .navbar .links {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 40%;
+                height: 100vh;
+                background: rgb(254, 251, 251);
+                flex-direction: column;
+                justify-content: center;
+                transition: left 0.3s ease;
+            }
+
+            .navbar .links.show-menu {
+                left: 0;
+            }
+
+            .navbar .links a {
+                color: #000;
+            }
+
+            .navbar .close-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="animate__animated animate__fadeInDown">
+        <nav class="navbar">
+            <span class="hamburger-btn">&#9776;</span>
+            <a href="investment.html" class="logo">
+                <img src="/interactive budgeting tool/files/images/logo.png" alt="logo">
+                <h2>Budgetingtool</h2>
+            </a>
+            <ul class="links">
+                <span class="close-btn">&times;</span>
+                <li><a href="stocks.html">STOCKS</a></li>
+                <li><a href="CRYPTO.HTML">CRYPTO</a></li>
+                <li><a href="commodities.html">COMMODITIES</a></li>
+                <li><a href="bonds.html">BONDS</a></li>
+                <li><a href="mutualfunds.html">MUTUAL FUNDS</a></li>
+        </nav>
+    </header>
+    <section class="investment-section">
+        <h2>Mutual Funds</h2>
+        <div class="grid-container">
+          <div class="card">
+            <img src="/interactive budgeting tool/files/images/motilal.png" alt="ETFs" class="logo">
+            <p>Motilal Oswal Gold and Silver ETFs FoF Direct Growth</p>
+          </div>
+          <div class="card">
+            <img src="/interactive budgeting tool/files/images/sbi.png" alt="PSU" class="logo">
+            <p>SBI PSU Direct Plan Growth</p>
+          </div>
+          <div class="card">
+            <img src="/interactive budgeting tool/files/images/hdfc.png" alt="FlexiCap" class="logo">
+            <p>HDFC Flexi Cap Direct Plan Growth</p>
+          </div>
+          <div class="card">
+            <img src="https://logo.clearbit.com/icicipruamc.com" alt="LargeCap" class="logo">
+            <p>ICICI Prudential Large & Mid Cap Fund Direct Plan Growth</p>
+          </div>
+          <div class="card">
+            <img src="/interactive budgeting tool/files/images/quant.png" alt="MidCap" class="logo">
+            <p>Quant Mid Cap Fund Direct Growth</p>
+          </div>
+          <div class="card">
+            <img src="/interactive budgeting tool/files/images/kotak.png" alt="SmallCap" class="logo">
+            <p>Kotak Small Cap Fund Direct Growth</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="investment-section" id="live-mutualfunds">
+        <h2>Real-time Mutual Fund / ETF Prices</h2>
+        <p id="mf-status" style="font-weight: 600; color:#1f4d98;">Loading mutual fund prices...</p>
+        <table style="width:100%; border-collapse: collapse; margin-bottom: 20px;">
+          <thead>
+            <tr>
+              <th style="border: 1px solid #d1d5db; padding: 10px;">Instrument</th>
+              <th style="border: 1px solid #d1d5db; padding: 10px;">Price</th>
+              <th style="border: 1px solid #d1d5db; padding: 10px;">Change</th>
+              <th style="border: 1px solid #d1d5db; padding: 10px;">Last Updated</th>
+            </tr>
+          </thead>
+          <tbody id="mf-data"></tbody>
+        </table>
+        <div style="height: 320px; background:#fff; border-radius:12px; padding:10px;"><canvas id="mfChart"></canvas></div>
+        <div id="tv-mf-chart" style="width: 100%; height: 500px; margin-top: 20px; background: #fff; border-radius: 12px;"></div>
+      </section>
+    
+    <script>
+        const navbarMenu = document.querySelector(".navbar .links");
+        const hamburgerBtn = document.querySelector(".hamburger-btn");
+        const closeBtn = document.querySelector(".close-btn");
+
+        hamburgerBtn.addEventListener("click", () => {
+            navbarMenu.classList.toggle("show-menu");
+        });
+
+        closeBtn.addEventListener("click", () => {
+            navbarMenu.classList.remove("show-menu");
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        const funds = [
+            {name: 'Vanguard S&P 500 ETF', symbol: 'VOO', tvSymbol: 'NYSE:VOO'},
+            {name: 'SPDR S&P 500 ETF', symbol: 'SPY', tvSymbol: 'AMEX:SPY'},
+            {name: 'Invesco QQQ Trust', symbol: 'QQQ', tvSymbol: 'NASDAQ:QQQ'},
+            {name: 'iShares Core S&P 500 ETF', symbol: 'IVV', tvSymbol: 'NYSE:IVV'}
+        ];
+
+        const mfTable = document.getElementById('mf-data');
+        const mfStatus = document.getElementById('mf-status');
+        const mfChart = new Chart(document.getElementById('mfChart').getContext('2d'), {
+            type: 'line',
+            data: { labels: [], datasets: [{ label: 'Price', data: [], borderColor: '#2563eb', backgroundColor: '#2563eb', fill: false, tension: 0.2 }] },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { title: { display: true, text: 'Date' } },
+                    y: { title: { display: true, text: 'Price (USD)' } }
+                }
+            }
+        });
+
+        async function fetchJsonWithFallback(url) {
+            const direct = await fetch(url);
+            if (direct.status === 429) {
+                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+                const proxyResp = await fetch(proxyUrl);
+                if (!proxyResp.ok) throw new Error(`Proxy request failed ${proxyResp.status}`);
+                return proxyResp.json();
+            }
+            if (!direct.ok) throw new Error(`Yahoo request failed ${direct.status}`);
+            return direct.json();
+        }
+
+        async function loadFundData() {
+            const symbolList = funds.map(f => f.symbol).join(',');
+            const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${encodeURIComponent(symbolList)}`;
+            try {
+                mfStatus.textContent = 'Loading mutual funds...';
+                const json = await fetchJsonWithFallback(url);
+                const quotes = json.quoteResponse?.result || [];
+                if (!quotes.length) { mfStatus.textContent = 'Unable to load mutual fund prices.'; return; }
+
+                mfTable.innerHTML = '';
+                quotes.forEach((item, idx) => {
+                    const change = item.regularMarketChangePercent || 0;
+                    const tr = document.createElement('tr');
+                    tr.style.cursor = 'pointer';
+                    if (idx === 0) tr.classList.add('selected');
+                    tr.innerHTML = `
+                        <td style="border: 1px solid #d1d5db; padding: 10px;">${item.shortName || item.symbol}</td>
+                        <td style="border: 1px solid #d1d5db; padding: 10px;">${item.regularMarketPrice?.toFixed(2) || 'N/A'}</td>
+                        <td style="border: 1px solid #d1d5db; padding: 10px; color:${change >= 0 ? '#0b8f1f' : '#dc2626'};">${change.toFixed(2)}%</td>
+                        <td style="border: 1px solid #d1d5db; padding: 10px;">${new Date(item.regularMarketTime * 1000).toLocaleTimeString()}</td>
+                    `;
+                    tr.addEventListener('click', () => {
+                        document.querySelectorAll('#mf-data tr').forEach(r => r.classList.remove('selected'));
+                        tr.classList.add('selected');
+                        updateFundChart(item.symbol);
+                        updateTradingView(item.symbol);
+                    });
+                    mfTable.appendChild(tr);
+                });
+
+                mfStatus.textContent = `Last updated ${new Date().toLocaleTimeString()}`;
+                const firstSymbol = quotes[0]?.symbol || 'VOO';
+                await updateFundChart(firstSymbol);
+                updateTradingView(firstSymbol);
+            } catch (error) {
+                console.error('Mutual fund load error', error);
+                mfStatus.textContent = 'Error loading mutual fund data.';
+                if (error.message.includes('429')) {
+                    mfStatus.textContent = 'Rate limited; retrying in 10 seconds...';
+                    setTimeout(loadFundData, 10000);
+                }
+            }
+        }
+
+        async function updateFundChart(symbol) {
+            const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=1mo`;
+            try {
+                const data = await fetchJsonWithFallback(url);
+                const r = data.chart?.result?.[0];
+                if (!r) return;
+                const ts = r.timestamp || [];
+                const close = r.indicators?.quote?.[0]?.close || [];
+                mfChart.data.labels = ts.map(t => new Date(t*1000).toLocaleDateString());
+                mfChart.data.datasets[0].data = close.map(v => v?.toFixed(2));
+                mfChart.data.datasets[0].label = `${symbol} Price`;
+                mfChart.update();
+            } catch (err) {
+                console.error('Fund chart load failed', err);
+            }
+        }
+
+        function updateTradingView(symbol) {
+            const container = document.getElementById('tv-mf-chart');
+            container.innerHTML = '';
+            const fund = funds.find(f => f.symbol === symbol) || funds[0];
+            if (typeof TradingView === 'undefined') {
+                container.innerHTML = '<p>TradingView unavailable right now.</p>';
+                return;
+            }
+            new TradingView.widget({
+                width: '100%',
+                height: 460,
+                symbol: fund.tvSymbol,
+                interval: 'D',
+                timezone: 'Etc/UTC',
+                theme: 'light',
+                style: '1',
+                locale: 'en',
+                toolbar_bg: '#f1f3f6',
+                enable_publishing: false,
+                allow_symbol_change: true,
+                container_id: 'tv-mf-chart'
+            });
+        }
+
+        loadFundData();
+        setInterval(loadFundData, 60000);
+    </script>
+    <script src="https://s3.tradingview.com/tv.js"></script>
+</body>
+</html>
