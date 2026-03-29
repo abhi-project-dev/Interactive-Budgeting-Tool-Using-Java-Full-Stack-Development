@@ -1,6 +1,6 @@
 # Interactive-Budgeting-Tool-Using-Java-Full-Stack-Development
 The Interactive Budgeting Tool is a full stack web application designed to help users efficiently manage their personal finances. Built using Java Full Stack technologies, this application provides a seamless experience for tracking income, monitoring expenses, and planning savings.
-
+![image alt](https://github.com/abhi-project-dev/Interactive-Budgeting-Tool-Using-Java-Full-Stack-Development/blob/main/Screenshot%202025-04-02%20at%2020.49.39.png#:~:text=Screenshot-,2025%2D04%2D02,-at%2020.49.39.png)
 Users can input their financial details such as income, expenses, and savings targets. The system processes this data on the backend and dynamically generates insights, including:
 
 
